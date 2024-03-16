@@ -1,0 +1,57 @@
+@import "../globalStyle/globalStyle.scss";
+
+.header {
+  width: 100%;
+  height: 60px;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+
+  .header-inner {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    li {
+      display: flex;
+
+      .link {
+        display: flex;
+        height: 60px;
+        padding: 0 20px;
+        color: var(--primary-color);
+        justify-content: center;
+        align-items: center;
+        svg {
+          width: 30px !important;
+          height: 30px !important;
+        }
+      }
+      .link.active {
+        border-bottom: 4px solid var(--primary-color);
+      }
+
+      .search {
+        border-radius: 32px;
+        width: 286px;
+        padding: 4px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--primary-color);
+        margin: 0 10px;
+
+        input {
+          width: 100%;
+          color: var(--primary-color);
+          font-size: 1.5rem;
+        }
+        .search-btn {
+          width: 30px;
+          height: 30px;
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}
