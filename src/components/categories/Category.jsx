@@ -9,26 +9,26 @@ function Category() {
     <div className="categories">
       <div className="cate-list">
         <div className="cate button-btn">
-          <h3>Jobs</h3>
+          <h3>Tất cả</h3>
         </div>
         <div className="cate button-btn">
-          <h3>Fast Jobs</h3>
+          <h3>Việc nhanh</h3>
         </div>
 
         <div className="cate button-btn">
-          <h3>Wanted</h3>
+          <h3>Tuyển dụng</h3>
         </div>
         <div className="cate button-btn">
-          <h3>Full Time</h3>
+          <h3>Toàn thời gian</h3>
         </div>
         <div className="cate button-btn">
-          <h3>Part Time</h3>
+          <h3>Bán thời gian</h3>
         </div>
         <div className="cate button-btn">
-          <h3>Freelancer</h3>
+          <h3>Việc tự do</h3>
         </div>
         <div className="cate button-btn">
-          <h3>Policy</h3>
+          <h3>Trực tuyến</h3>
         </div>
       </div>
 
@@ -38,7 +38,7 @@ function Category() {
           <Box className={"sort-btn"} sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                Age
+                Địa chỉ
               </InputLabel>
               <NativeSelect
                 defaultValue={30}
@@ -57,7 +57,7 @@ function Category() {
           <Box className={"sort-btn"} sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                Age
+                Lĩnh vực
               </InputLabel>
               <NativeSelect
                 defaultValue={30}
@@ -76,7 +76,7 @@ function Category() {
           <Box className={"sort-btn"} sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                Age
+                Mức lương
               </InputLabel>
               <NativeSelect
                 defaultValue={30}

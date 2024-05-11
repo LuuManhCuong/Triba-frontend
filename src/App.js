@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Home from "./page/Home";
 import Account from "./page/Account";
 import Analysis from "./page/Analysis";
@@ -8,6 +9,7 @@ import Honor from "./page/Honor";
 import Personal from "./page/Personal";
 import Setting from "./page/Setting";
 import Follow from "./page/Follow";
+import Login from "./components/auth/Login";
 function App() {
   return (
     <Routes>
@@ -20,6 +22,7 @@ function App() {
       <Route path="/personal" element={<Personal />} />
       <Route path="/setting" element={<Setting />} />
       <Route path="/follow" element={<Follow />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }

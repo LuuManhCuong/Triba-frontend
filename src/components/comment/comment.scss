@@ -1,0 +1,123 @@
+@keyframes move_ltr {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+    z-index: -1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: -1;
+  }
+}
+
+@keyframes move_rtl {
+  0% {
+    transform: translateX(100px);
+
+    z-index: -1;
+  }
+  100% {
+    transform: translateX(0);
+
+    z-index: -1;
+  }
+}
+
+.comment-block {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  animation: move_ltr 0.2s ease-in;
+  background-color: var(--primary-color);
+  .comment-title {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    padding-top: 0;
+  }
+  .comment-input {
+    border-bottom: 1px solid white;
+    // border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: start;
+    .write-comment {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      button {
+        width: 60px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid;
+      }
+      textarea {
+        overflow-y: hidden;
+        margin-right: 10px;
+        flex: 1;
+        // border-bottom: 1px solid;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 500;
+        outline: none;
+        background-color: transparent;
+        word-wrap: break-word;
+        overflow-wrap: break-word; /* Thêm vào để đảm bảo tự động xuống dòng */
+      }
+    }
+  }
+  h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    // color: white;
+  }
+  .comment-item {
+    border: 1px solid rgba(255, 255, 255, 0.543);
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    background-color: var(--primary-color);
+  }
+  .user {
+    margin: 5px 0;
+    width: 100%;
+    color: white;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+  }
+  .user-infor {
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    p {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  .content {
+    margin-left: 50px;
+    font-size: 1.5rem;
+    color: white;
+    .action {
+      display: flex;
+      align-items: center;
+
+      div {
+        padding: 5px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

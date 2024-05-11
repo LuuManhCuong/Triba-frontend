@@ -30,9 +30,20 @@ html {
   color: var(--text-color);
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: linear-gradient(#ccc, var(--primary-color));
+}
+
 body {
+  height: 100vh;
+  overflow: hidden;
   font-size: 1.6rem;
   line-height: 1.5;
+  
   text-rendering: optimizeSpeed;
 }
 

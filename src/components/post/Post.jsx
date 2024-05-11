@@ -9,96 +9,185 @@ import { RiMessengerFill } from "react-icons/ri";
 import { BiDetail } from "react-icons/bi";
 import { PiShareFatBold } from "react-icons/pi";
 import axios from "axios";
+import ImageGrid from "./ImageGrid";
+import { MdClear } from "react-icons/md";
+import ImageSlick from "./ImageSlick";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Modal from "react-bootstrap/Modal";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  countImgSliceSelector,
+  showComponentSelector,
+} from "../../redux-tookit/selector";
+import PostGrid from "./PostGrid";
+import PostDetail from "./PostDetail";
+import Comment from "../comment/Comment";
+import { showComponentSlice } from "../../redux-tookit/reducer/showComponent";
 
 function Post() {
+  const dispatch = useDispatch();
+  const component = useSelector(showComponentSelector);
+  const { value } = useSelector(countImgSliceSelector);
   const [jobs, setJobs] = useState([]);
+  const [activeImg, setActiveImg] = useState(0);
+  const [showImgs, setShowImgs] = useState([]);
+  const [show, setShow] = useState(false);
+  const [showComment, setShowComment] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/triba/job"
+        "http://localhost:8080/api/v1/user/triba/job"
       );
       setJobs(response.data);
     };
 
     fetchData();
   }, []);
+  const imgs = [
+    "https://i.ytimg.com/vi/OKZFHo5p4VA/sddefault.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeizyn8SwFNfeJdYexfcqyurpCe47SKVR0Ew&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTANwDuYP5dvG_YaN4TQXxf53cavMSPzAFqyA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRImgQ_NEpkyh1-06jjt3QfXrnPL6qP_SPrE9iSxbafA0Ryep_kNJohVnM4UkZRT00g3Y4&usqp=CAU",
+  ];
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+  };
   return (
-    <Row>
-      <Col xs={6}>
-        {jobs?.map((job, i) => (
-          <div className="post">
-            <div className="post-head">
-              <div className="user">
-                <img
-                  className="avatar"
-                  src={job.avatar || "https://s.net.vn/0woj"}
-                  alt="avatar"
-                />
-                <div>
-                  <h3 className="username">Mạnh Cường</h3>
-                  <p className="time">{job.createAt}</p>
-                </div>
-              </div>
-              <div className="salary">{job.salary} VND</div>
-              <div className="action">
-                <IoIosMenu />
-              </div>
-            </div>
+    <>
+      <Modal
+        className="moda"
+        show={show}
+        onHide={() => setShow(false)}
+        dialogClassName="modal-90w"
+        aria-labelledby="example-custom-modal-styling-title"
+      >
+        <Modal.Title
+          className="header-moda"
+          id="example-custom-modal-styling-title"
+        >
+          Ảnh {value + 1} / {imgs.length}
+          <button onClick={() => setShow(false)}>
+            <MdClear></MdClear>
+          </button>
+        </Modal.Title>
+        <Modal.Body>
+          {/* <img src={showImgs[0]} alt="img" /> */}
+          <ImageSlick imgs={showImgs} activeImg={activeImg}></ImageSlick>
+        </Modal.Body>
+      </Modal>
 
-            <div className="post-body">
-              <h2 className="content">{job.title}</h2>
-              <p className="content">{job.description}</p>
-              <img
-                className="post-body-img"
-                src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/431955776_805022964985935_1933965139556264659_n.jpg?stp=dst-jpg_p480x480&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGr08WGwaByFmVMsoQd8u2ayARUKCNmkAXIBFQoI2aQBadgZUDDjZNxmsrE9FLNCZ0C9pOFa2cf7g68-75FWhpr&_nc_ohc=tKYhvPg5tjoAX-DYByx&_nc_zt=23&_nc_ht=scontent.fdad2-1.fna&oh=00_AfBL1osJoEYGXJJLFe5PVjbfZrsKVJkt8-wT7clv6G3cXw&oe=65F9596C"
-                alt="img"
-              />
-              <img
-                className="post-body-img"
-                src="https://scontent.fdad1-2.fna.fbcdn.net/v/t39.30808-6/429838755_800777385410493_7822550900069568141_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHQfuUZSQ_f72lorVWylsbfLxyvvBzDuSYvHK-8HMO5Jg6ZuPvZUYGOsObOV7MqX_qB9fGTk37CBw_jw42VwXWZ&_nc_ohc=Q7iCeHCJjdQAX8GoncU&_nc_zt=23&_nc_ht=scontent.fdad1-2.fna&oh=00_AfDzNGA6R7mSqB0FXt-0pvh-fMbzI9DjFnLopYs5ufZ3Tg&oe=65F8C0A8"
-                alt="img"
-              />
-            </div>
+      <Row>
+        <Col className="post-wrap" xs={6}>
+          {jobs?.map((job, i) => (
+            <div key={i} className="post">
+              <div className="post-head">
+                <div className="user">
+                  <img
+                    className="avatar"
+                    src={
+                      job.avatar ||
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLlxn9oYNzB9fzQULwldEAN2DKZdqYojMyDA&s"
+                    }
+                    alt="avatar"
+                  />
+                  <div>
+                    <h3 className="username">Mạnh Cường</h3>
+                    <p className="time">{job.createAt}</p>
+                  </div>
+                </div>
+                <div className="salary">{job.salary} VND</div>
+                <div className="action">
+                  <IoIosMenu />
+                </div>
+              </div>
 
-            <div className="post-footer">
-              <div className="react footer-action">
-                <h3 className="count">133</h3>
-                <div>
-                  <FaRegHeart></FaRegHeart> Yêu thích
-                </div>
+              <div className="post-body">
+                <h2 className="content">{job.title}</h2>
+                <p className="content">{job.description}</p>
+
+                <ImageGrid imgs={imgs}></ImageGrid>
               </div>
-              <div className="comment footer-action">
-                <h3 className="count">133</h3>
-                <div>
-                  <FaRegComments></FaRegComments>
-                  Bình luận
+
+              <div className="post-footer">
+                <div className="react footer-action">
+                  <h3 className="count">133</h3>
+                  <div>
+                    <FaRegHeart></FaRegHeart> Yêu thích
+                  </div>
                 </div>
-              </div>
-              <div className="share footer-action">
-                <h3 className="count">133</h3>
-                <div>
-                  <PiShareFatBold></PiShareFatBold>
-                  Chia sẻ
+                <div className="comment footer-action">
+                  <h3 className="count">133</h3>
+                  <div
+                    onClick={() => {
+                      dispatch(
+                        showComponentSlice.actions.setComponent({
+                          jobId: job.jobId,
+                          component: "comment",
+                        })
+                      );
+                    }}
+                  >
+                    <FaRegComments></FaRegComments>
+                    Bình luận
+                  </div>
                 </div>
-              </div>
-              <div className="detail footer-action">
-                <h3 className="count">133</h3>
-                <div>
-                  <BiDetail></BiDetail>
-                  Ứng tuyển
+                <div className="share footer-action">
+                  <h3 className="count">133</h3>
+                  <div>
+                    <PiShareFatBold></PiShareFatBold>
+                    Chia sẻ
+                  </div>
                 </div>
-              </div>
-              <div className="detail footer-action">
-                <div>
-                  <RiMessengerFill></RiMessengerFill> Trao đổi
+                <div className="detail footer-action">
+                  <h3 className="count">133</h3>
+                  <div
+                    onClick={() => {
+                      dispatch(
+                        showComponentSlice.actions.setComponent({
+                          jobId: job.jobId,
+                          component: "detail",
+                        })
+                      );
+                    }}
+                  >
+                    <BiDetail></BiDetail>
+                    Chi tiết
+                  </div>
+                </div>
+                <div className="detail footer-action">
+                  <h3 className="count">0</h3>
+                  <div>
+                    <RiMessengerFill></RiMessengerFill> Trao đổi
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </Col>
-    </Row>
+          ))}
+        </Col>
+
+        {component.component === "comment" ? (
+          <Col className="post-wrap-detail-block">
+            <Comment clear={true} className="post-wrap-detail"></Comment>
+          </Col>
+        ) : component.component === "detail" ? (
+          <PostDetail imgs={imgs}></PostDetail>
+        ) : (
+          <Col xs={6}>
+            <PostGrid></PostGrid>
+          </Col>
+        )}
+      </Row>
+    </>
   );
 }
 
