@@ -5,16 +5,21 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import PostDetail from "./PostDetail";
 import { useSelector, useDispatch } from "react-redux";
+import CardJob from "../card/CardJob";
 
 function PostGrid() {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        "http://localhost:8080/api/v1/triba/job"
-      );
-      setJobs(response.data);
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/user/job"
+        );
+        setJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
@@ -22,7 +27,7 @@ function PostGrid() {
 
   return (
     <Row className="post-grid">
-      {jobs.map((job, i) => (
+      {/* {jobs.map((job, i) => (
         <Col xs={6} className="post-card">
           <div className="user">
             <img
@@ -43,7 +48,9 @@ function PostGrid() {
           <h2>{job.salary} Vnd</h2>
           <h2>{job.address} Vnd</h2>
         </Col>
-      ))}
+      ))} */}
+
+      <CardJob jobs={jobs}></CardJob>
     </Row>
   );
 }

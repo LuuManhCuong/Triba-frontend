@@ -64,7 +64,7 @@ function Header() {
           </NavLink>
 
           <NavLink
-            to="/message"
+            to="/messenger"
             className={({ isActive, isPending }) =>
               isPending ? "pending link" : isActive ? "active link" : " link"
             }
@@ -82,7 +82,7 @@ function Header() {
             <Dropdown.Menu>
               <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
               <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+              <Dropdown.Item href="/login">login</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 

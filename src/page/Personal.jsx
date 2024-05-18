@@ -1,10 +1,15 @@
 import React from "react";
 import Layout from "../layout/Layout";
+import Project from "../components/project/Project";
 
 function Personal() {
   return (
     <Layout>
-      <div>Personnal</div>
+      <div>
+        Personnal
+        {/* <FromCreateJob></FromCreateJob> */}
+        <Project></Project>
+      </div>
     </Layout>
   );
 }

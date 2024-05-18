@@ -35,17 +35,21 @@ function Post() {
   const [showImgs, setShowImgs] = useState([]);
   const [show, setShow] = useState(false);
   const [showComment, setShowComment] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        "http://localhost:8080/api/v1/user/triba/job"
-      );
-      setJobs(response.data);
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/user/job"
+        );
+        setJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
   }, []);
+
   const imgs = [
     "https://i.ytimg.com/vi/OKZFHo5p4VA/sddefault.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeizyn8SwFNfeJdYexfcqyurpCe47SKVR0Ew&s",
