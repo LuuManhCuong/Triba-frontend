@@ -6,7 +6,7 @@ function Personal() {
   return (
     <Layout>
       <div>
-        Personnal
+        {/* Personnal */}
         {/* <FromCreateJob></FromCreateJob> */}
         <Project></Project>
       </div>

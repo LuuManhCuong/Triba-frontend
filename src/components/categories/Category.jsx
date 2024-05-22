@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./category.scss";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import Button from "@mui/material/Button";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { filterSlice } from "../../redux-tookit/reducer/filterSclice";
 
 const jobCategories = {
   industries: [
@@ -47,46 +49,60 @@ const jobCategories = {
 };
 
 function Category() {
+  const dispatch = useDispatch();
   const [selectedWorkType, setSelectedWorkType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
-  const [jobs, setJobs] = useState([]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    const response = await fetch(
-      `http://localhost:8080/api/v1/user/job/filter?industryName=${selectedIndustry}&positionName=${selectedPosition}&locationName=${selectedLocation}&workTypeName=${selectedWorkType}`
+    dispatch(
+      filterSlice.actions.filter({
+        selectedIndustry,
+        selectedLocation,
+        selectedPosition,
+        selectedWorkType,
+      })
     );
-    const data = await response.json();
-    setJobs(data);
   };
 
-  console.log("data job: ", jobs);
+  useEffect(() => {
+    dispatch(
+      filterSlice.actions.filter({
+        selectedIndustry,
+        selectedLocation,
+        selectedPosition,
+        selectedWorkType,
+      })
+    );
+  }, [selectedWorkType]);
 
   return (
     <div className="categories">
-      <div className="cate-list">
-        <div className="cate button-btn">
+      {/* <div className="cate-list">
+        <div
+          className="cate button-btn"
+          onClick={() => setSelectedWorkType("tất cả")}
+        >
           <h3>Tất cả</h3>
         </div>
-        <div className="cate button-btn">
-          <h3>Việc nhanh</h3>
-        </div>
-        <div className="cate button-btn">
-          <h3>Tuyển dụng</h3>
-        </div>
-      </div>
+        {jobCategories.workTypes.map((type, index) => (
+          <div
+            className="cate button-btn"
+            key={index}
+            onClick={() => setSelectedWorkType(type)}
+          >
+            <h3>{type}</h3>
+          </div>
+        ))}
+      </div> */}
 
       <div className="filter">
         <form onSubmit={handleSubmit}>
           <div className="sort">
             <Box className="sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="work-type-select">
-                  Loại hình
-                </InputLabel>
                 <NativeSelect
                   value={selectedWorkType}
                   onChange={(e) => setSelectedWorkType(e.target.value)}
@@ -108,9 +124,6 @@ function Category() {
             </Box>
             <Box className="sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="location-select">
-                  Khu vực
-                </InputLabel>
                 <NativeSelect
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
@@ -132,9 +145,6 @@ function Category() {
             </Box>
             <Box className="sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="industry-select">
-                  Ngành/Nghề
-                </InputLabel>
                 <NativeSelect
                   value={selectedIndustry}
                   onChange={(e) => setSelectedIndustry(e.target.value)}
@@ -156,9 +166,6 @@ function Category() {
             </Box>
             <Box className="sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="position-select">
-                  Vị trí
-                </InputLabel>
                 <NativeSelect
                   value={selectedPosition}
                   onChange={(e) => setSelectedPosition(e.target.value)}
@@ -178,20 +185,15 @@ function Category() {
                 </NativeSelect>
               </FormControl>
             </Box>
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ background: "#735e59" }}
+            >
+              Tìm kiếm
+            </Button>
           </div>
-          <Button type="submit" variant="contained" color="primary">
-            Tìm kiếm
-          </Button>
         </form>
-      </div>
-      <div className="job-results">
-        {jobs.map((job) => (
-          <div key={job.jobId} className="job-card">
-            <h3>{job.title}</h3>
-            <p>{job.description}</p>
-            <p>{job.companyName}</p>
-          </div>
-        ))}
       </div>
     </div>
   );

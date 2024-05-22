@@ -1,53 +1,11 @@
+import { useEffect, useState } from "react";
+import FormCreateJob from "../forms/FormCreateJob";
 import "./project.scss";
+import CardJob from "../card/CardJob";
+import axios from "axios";
 
 const Avatar = ({ src, alt }) => (
   <img src={src} className="img-fluid avatar-xxl rounded-circle" alt={alt} />
-);
-
-const NavTabs = () => (
-  <ul
-    className="nav nav-tabs nav-tabs-custom border-bottom-0 mt-3 nav-justified"
-    role="tablist"
-  >
-    <li className="nav-item" role="presentation">
-      <a
-        className="nav-link px-4 active"
-        data-bs-toggle="tab"
-        href="#projects-tab"
-        role="tab"
-        aria-selected="false"
-      >
-        <span className="d-block d-sm-none">
-          <i className="fas fa-home"></i>
-        </span>
-        <span className="d-none d-sm-block">Hợp tác</span>
-      </a>
-    </li>
-    <li className="nav-item" role="presentation">
-      <a
-        className="nav-link px-4"
-        // href="https://bootdey.com/snippets/view/profile-task-with-team-cards"
-        target="__blank"
-      >
-        <span className="d-block d-sm-none">
-          <i className="mdi mdi-menu-open"></i>
-        </span>
-        <span className="d-none d-sm-block">Chỉnh sửa hồ sơ</span>
-      </a>
-    </li>
-    <li className="nav-item" role="presentation">
-      <a
-        className="nav-link px-4"
-        href="https://bootdey.com/snippets/view/profile-with-team-section"
-        target="__blank"
-      >
-        <span className="d-block d-sm-none">
-          <i className="mdi mdi-account-group-outline"></i>
-        </span>
-        <span className="d-none d-sm-block">Đăng tin tuyển dụng</span>
-      </a>
-    </li>
-  </ul>
 );
 
 const ProjectCard = ({ project, index }) => (
@@ -65,40 +23,13 @@ const ProjectCard = ({ project, index }) => (
               </h6>
             </div>
           </div>
-          <div className="dropdown ms-2">
-            <a
-              href="#"
-              className="dropdown-toggle font-size-16 text-muted"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i className="mdi mdi-dots-horizontal"></i>
-            </a>
-            <div className="dropdown-menu dropdown-menu-end">
-              <a
-                className="dropdown-item"
-                href="javascript: void(0);"
-                data-bs-toggle="modal"
-                data-bs-target=".bs-example-new-project"
-              >
-                Edit
-              </a>
-              <a className="dropdown-item" href="javascript: void(0);">
-                Share
-              </a>
-              <div className="dropdown-divider"></div>
-              <a
-                className="dropdown-item delete-item"
-                href="javascript: void(0);"
-              >
-                Delete
-              </a>
-            </div>
-          </div>
         </div>
         <div className="mb-4">
-          <h5 className="mb-1 font-size-17 team-title">{project.title}</h5>
+          {/* <h2 className="mb-1 font-size-17 team-title">
+            {project.assignees[1].name}
+          </h2> */}
+
+          <h5 className="mb-1 font-size-15 team-title">{project.title}</h5>
           <p className="text-muted mb-0 team-description">
             {project.description}
           </p>
@@ -145,54 +76,94 @@ const Projects = ({ projects }) => (
   </div>
 );
 
-const project = () => {
-  const projects = [
-    {
-      date: "21 Jun, 2021",
-      statusColor: "danger",
-      title: "Marketing",
-      description: "Every Marketing Plan Needs",
-      assignees: [
+const Project = () => {
+  const [activeCpn, setActiveCpn] = useState(1);
+  const [dataApply, setDataApply] = useState([]);
+  const [pro, setPro] = useState([]);
+
+  useEffect(() => {
+    setPro([]);
+    dataApply.forEach((e) =>
+      setPro((prev) => [
+        ...prev,
         {
-          name: "Terrell Soto",
-          avatar: "https://bootdey.com/img/Content/avatar/avatar1.png",
+          date: e.applicationTime,
+          statusColor: e.status === "PENDING" ? "danger" : "success",
+          title: e.job.title,
+          description: e.job.description,
+          assignees: [
+            {
+              name: e.user.lastName + " " + e.user.firstName,
+              avatar:
+                e.user.avatar ||
+                `https://bootdey.com/img/Content/avatar/avatar7.png`,
+            },
+            {
+              name: e.job.user.lastName + " " + e.job.user.firstName,
+              avatar:
+                e.job.user.avatar ||
+                "https://bootdey.com/img/Content/avatar/avatar1.png",
+            },
+          ],
+          status: e.status,
         },
-        {
-          name: "Ruhi Shah",
-          avatar: "https://bootdey.com/img/Content/avatar/avatar1.png",
-        },
-        {
-          name: "Denny Silva",
-          avatar: "https://bootdey.com/img/Content/avatar/avatar1.png",
-        },
-      ],
-      status: "Pending",
-    },
-    {
-      date: "13 Aug, 2021",
-      statusColor: "success",
-      title: "Website Design",
-      description: "Creating the design and layout of a website.",
-      assignees: [
-        {
-          name: "Kelly Osborn",
-          avatar: "https://bootdey.com/img/Content/avatar/avatar1.png",
-        },
-        {
-          name: "John Page",
-          avatar: "https://bootdey.com/img/Content/avatar/avatar2.png",
-        },
-      ],
-      status: "Completed",
-    },
-    // Add more projects here
+      ])
+    );
+  }, [dataApply]);
+
+  console.log("active: ", pro);
+
+  const nav = [
+    { id: 1, title: "Bài viết của tôi" },
+    { id: 2, title: "Hợp tác" },
+    { id: 3, title: "Đăng bài" },
+    { id: 4, title: "Chỉnh sửa hồ sơ" },
   ];
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = localStorage.getItem("userId");
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/user/job/get/${userId}`
+        );
+        // console.log("data: ", response.data);
+        setJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchDataApply = async () => {
+      const userId = localStorage.getItem("userId");
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/user/job/applications/${userId}`
+        );
+        // console.log("data apply: ", response.data);
+        setDataApply(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (activeCpn === 1) {
+      fetchData();
+    } else if (activeCpn === 2) {
+      fetchDataApply();
+    } else {
+    }
+  }, [activeCpn]);
+
+  console.log("data apply: ", dataApply);
 
   return (
     <div className="project-container">
       <div className="row">
         <div className="col-xl-8">
-          <div className="card">
+          <div className="card" style={{ zoom: "0.8" }}>
             <div className="card-body pb-0">
               <div className="row align-items-center">
                 <div className="col-md-3">
@@ -202,7 +173,7 @@ const project = () => {
                       alt="Jansh Wells"
                     />
                     <h4 className="text-primary font-size-20 mt-3 mb-2">
-                      Jansh Wells
+                      Mạnh Cường
                     </h4>
                     <h5 className="text-muted font-size-13 mb-0">
                       Web Designer
@@ -232,29 +203,80 @@ const project = () => {
                         </div>
                       </div>
                     </div>
-                    <NavTabs />
+
+                    {/* nav bar  */}
+
+                    <ul
+                      className="nav nav-tabs nav-tabs-custom border-bottom-0 mt-3 nav-justified"
+                      role="tablist"
+                    >
+                      {nav?.map((e, i) => (
+                        <li key={i} className="nav-item" role="presentation">
+                          <div
+                            style={{ cursor: "pointer" }}
+                            className={
+                              activeCpn == e.id
+                                ? "nav-link px-4 active"
+                                : "nav-link px-4"
+                            }
+                            data-bs-toggle="tab"
+                            role="tab"
+                            aria-selected="false"
+                            onClick={() => setActiveCpn(e.id)}
+                          >
+                            <span className="d-block d-sm-none">
+                              <i className="fas fa-home"></i>
+                            </span>
+                            <span className="d-none d-sm-block">{e.title}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="card">
-            <div className="tab-content p-4">
-              <div
-                className="tab-pane active show"
-                id="projects-tab"
-                role="tabpanel"
-              >
-                <div className="d-flex align-items-center">
-                  <div className="flex-1">
-                    <h4 className="card-title mb-4">Projects</h4>
-                  </div>
+
+          {/* card */}
+          {activeCpn === 1 && (
+            <div className="card" style={{ height: "70vh", overflow: "auto" }}>
+              <div className="tab-content p-4">
+                <div
+                  className="tab-pane active show"
+                  id="projects-tab"
+                  role="tabpanel"
+                >
+                  {/* <Projects projects={projects} /> */}
+                  {jobs?.length > 0 ? (
+                    <CardJob jobs={jobs}></CardJob>
+                  ) : (
+                    <div>Bạn chưa đăng bài viết nào</div>
+                  )}
                 </div>
-                <Projects projects={projects} />
               </div>
             </div>
-          </div>
+          )}
+
+          {activeCpn === 2 && (
+            <div className="card" style={{ height: "70vh", overflow: "auto" }}>
+              <div className="tab-content p-4">
+                <div
+                  className="tab-pane active show"
+                  id="projects-tab"
+                  role="tabpanel"
+                >
+                  <Projects projects={pro} />
+                  {/* <CardJob jobs={jobs}></CardJob> */}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* {activeCpn === 2 && <div>Chỉnh sửa hồ sơ</div>} */}
+          {activeCpn === 3 && <FormCreateJob></FormCreateJob>}
         </div>
+
         <div className="col-xl-4">
           <div className="card">
             <div className="card-body">
@@ -275,7 +297,10 @@ const project = () => {
               <hr />
               <div className="pt-2">
                 <h4 className="card-title mb-4">My Skill</h4>
-                <div className="d-flex gap-2 flex-wrap">
+                <div
+                  className="d-flex gap-2 flex-wrap"
+                  style={{ color: "red" }}
+                >
                   <span className="badge badge-soft-primary">Photoshop</span>
                   <span className="badge badge-soft-primary">illustrator</span>
                   <span className="badge badge-soft-primary">HTML</span>
@@ -399,4 +424,4 @@ const project = () => {
   );
 };
 
-export default project;
+export default Project;

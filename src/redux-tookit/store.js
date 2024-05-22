@@ -3,6 +3,7 @@ import { counterSlice } from "./reducer/counterSlice";
 import { countImgSlice } from "./reducer/countImgSlice";
 import { showComponentSlice } from "./reducer/showComponent";
 import { accountSlice } from "./reducer/accountSlice";
+import { filterSlice } from "./reducer/filterSclice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     countImg: countImgSlice.reducer,
     component: showComponentSlice.reducer,
     account: accountSlice.reducer,
+    filter: filterSlice.reducer,
   },
 });
 

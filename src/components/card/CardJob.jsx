@@ -16,13 +16,15 @@ function CardJob({ jobs }) {
                   <CountryItem
                     key={i}
                     imgSrc={
-                      job.thumbnail ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLlxn9oYNzB9fzQULwldEAN2DKZdqYojMyDA&s"
+                      // job.thumbnail ||
+                      "https://i.ytimg.com/vi/OKZFHo5p4VA/sddefault.jpg"
                     }
-                    username="Mạnh cường"
+                    username={job.user.lastName + " " + job.user.firstName}
                     address={job.address}
                     title={job.title}
-                    people="8.66 Mil People"
+                    industry={job.industries.map((e, i) => (
+                      <>{e.name + " "}</>
+                    ))}
                     time={job.createAt}
                     salary={job.salary}
                     dispatch={dispatch}
@@ -43,14 +45,15 @@ function CountryItem({
   username,
   address,
   title,
-  people,
+  industry,
   time,
   salary,
   dispatch,
   jobId,
+  key,
 }) {
   return (
-    <div className="col-lg-12">
+    <div className="col-lg-12" key={key}>
       <div className="item">
         <div className="row">
           <div className="col-lg-4 col-sm-5">
@@ -78,7 +81,7 @@ function CountryItem({
               <p>{title}</p>
               <ul className="info">
                 <li>
-                  <i className="fa fa-user"></i> {people}
+                  <i className="fa fa-user"></i> {industry}
                 </li>
                 <li>
                   <i className="fa fa-globe"></i> {time}

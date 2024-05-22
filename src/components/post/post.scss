@@ -25,9 +25,10 @@
 }
 
 .post-wrap {
-  height: 90vh;
+  height: 75vh;
   overflow-y: auto;
   z-index: 10 !important;
+  padding-bottom: 20px;
 }
 
 .post-wrap-detail-block {
@@ -124,7 +125,7 @@
 }
 
 .detail-img-slick {
-  width: 465px;
+  width: 420px;
   height: 250px;
   border-radius: 10px;
   background-color: rgb(0, 0, 0);

@@ -1,25 +1,46 @@
 import React, { useEffect, useState } from "react";
-import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import { MdClear } from "react-icons/md";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import PostGrid from "./PostGrid";
 import Comment from "../comment/Comment";
 import { useSelector, useDispatch } from "react-redux";
 import { showComponentSelector } from "../../redux-tookit/selector";
 import { showComponentSlice } from "../../redux-tookit/reducer/showComponent";
+import axios from "axios";
 
 function PostDetail({ imgs }) {
   const dispatch = useDispatch();
-  const componentf = useSelector(showComponentSelector);
-  console.log("Compoentn: ", componentf);
+  const { jobId } = useSelector(showComponentSelector);
   const [activeImg, setActiveImg] = useState(0);
   const [showImgs, setShowImgs] = useState([]);
   const [show, setShow] = useState(false);
+  const [jobDetail, setJobDetail] = useState(null);
 
-  var settings = {
+  useEffect(() => {
+    const fetchJobDetails = async (jobId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/user/job/${jobId}`
+        );
+        setJobDetail(response.data);
+      } catch (error) {
+        console.error("Error fetching job details:", error);
+      }
+    };
+
+    fetchJobDetails(jobId);
+
+    // Scroll to the top of the detail component
+    window.scrollTo(0, 0);
+  }, [jobId]);
+
+  if (!jobDetail) {
+    return <div>Loading...</div>;
+  }
+
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -29,6 +50,7 @@ function PostDetail({ imgs }) {
     autoplaySpeed: 3000,
     cssEase: "linear",
   };
+
   return (
     <>
       <Col className="post-wrap-detail-block">
@@ -38,17 +60,21 @@ function PostDetail({ imgs }) {
               <img
                 className="avatar"
                 src={
-                  // job.avatar ||
+                  jobDetail.user?.avatar ||
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLlxn9oYNzB9fzQULwldEAN2DKZdqYojMyDA&s"
                 }
                 alt="avatar"
               />
               <div>
-                <h3 className="username">Mạnh Cường</h3>
-                <p className="time"></p>
+                <h3 className="username">
+                  {jobDetail.user
+                    ? jobDetail.user.lastName + " " + jobDetail.user.firstName
+                    : "Unknown User"}
+                </h3>
+                <p className="time">{jobDetail.createAt}</p>
               </div>
             </div>
-            <div className="salary"> VND</div>
+            <div className="salary">{jobDetail.salary} VND</div>
             <div
               className="action"
               onClick={() =>
@@ -63,14 +89,15 @@ function PostDetail({ imgs }) {
               <MdClear />
             </div>
           </div>
-          <div className="post-body post-body-detal">
-            <h2 className="content"> gfdgfds</h2>
-            <p className="content"> đàasfdsa</p>
+          <div className="post-body post-body-detail">
+            <h2 className="content">{jobDetail.title}</h2>
+            <p className="content">{jobDetail.description}</p>
 
             {imgs?.length > 1 ? (
               <Slider {...settings} className="detail-img-slick">
                 {imgs.map((e, i) => (
                   <div
+                    key={i}
                     onClick={() => {
                       setShow(true);
                       setActiveImg(i);
@@ -89,13 +116,13 @@ function PostDetail({ imgs }) {
                   setActiveImg(0);
                   setShowImgs(imgs);
                 }}
-                className="img-Dettail"
+                className="img-Detail"
                 src={imgs[0]}
                 alt="img"
               />
             )}
           </div>
-          <Comment></Comment>
+          <Comment hiddenInfo={true} />
         </div>
       </Col>
     </>

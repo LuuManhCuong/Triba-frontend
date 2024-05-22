@@ -46,7 +46,7 @@ function Sidebar() {
           isPending ? "pending link" : isActive ? "active link" : " link"
         }
       >
-        <MdHandshake /> Hợp tác
+        <MdHandshake /> Dòng thời gian
       </NavLink>
 
       <NavLink

@@ -10,7 +10,7 @@ export const showComponentSlice = createSlice({
     setComponent: (state, action) => {
       state.jobId = action.payload.jobId;
       state.component = action.payload.component;
-      console.log("ACTION: ", action.payload);
+      // console.log("ACTION: ", action.payload);
     },
   },
 });

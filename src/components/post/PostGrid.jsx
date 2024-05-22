@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./post.scss";
 import axios from "axios";
 import Row from "react-bootstrap/esm/Row";
@@ -9,24 +9,55 @@ import CardJob from "../card/CardJob";
 
 function PostGrid() {
   const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
+  const [size, setSize] = useState(4);
+
+  const postRef = useRef(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [clientHeight, setClientHeight] = useState(0);
+  const [scrollHeight, setScrollHeight] = useState(3000);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/user/job"
+          `http://localhost:8080/api/v1/user/job?page=${page}&size=${size}`
         );
-        setJobs(response.data);
+        console.log("data: ", response.data.content);
+        setJobs(response.data.content);
+        setTotalPage(response.data.totalPages);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
-
+  }, [size]);
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, clientHeight, scrollHeight } = postRef.current;
+      setScrollTop(scrollTop);
+      setClientHeight(clientHeight);
+      setScrollHeight(scrollHeight);
+    };
+    postRef.current.addEventListener("scroll", handleScroll);
+    // Kiểm tra khi người dùng cuộn đến cuối trang
+    if (scrollTop + clientHeight >= scrollHeight && page < totalPage) {
+      setSize((prev) => prev + 4);
+    }
+    // return () => {
+    //   postRef.current.removeEventListener("scroll", handleScroll);
+    // };
+  }, [scrollTop]);
   return (
-    <Row className="post-grid">
+    <Row
+      className="post-grid"
+      ref={postRef}
+      style={{ overflow: "auto", maxHeight: "76vh" }}
+    >
       {/* {jobs.map((job, i) => (
         <Col xs={6} className="post-card">
           <div className="user">

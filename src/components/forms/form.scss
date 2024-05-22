@@ -1,3 +1,36 @@
 // .card-body {
 //   background-color: var(--primary-color);
 // }
+.layout-content-navbar {
+  overflow-y: auto;
+  height: 60vh;
+}
+.select-cate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .cate-item {
+    .cate-item-h {
+      height: 100px;
+      overflow: auto;
+    }
+  }
+}
+.form-check-label {
+  font-size: 1rem;
+  cursor: pointer;
+}
+.img-preview-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  .img-preview {
+    width: 180px;
+    height: 120px;
+    object-fit: contain;
+    border: 1px solid var(--primary-color);
+    margin: 5px;
+  }
+}
