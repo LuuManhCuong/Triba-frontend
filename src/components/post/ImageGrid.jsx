@@ -51,7 +51,7 @@ function ImageGrid({ imgs }) {
               setActiveImg(0);
             }}
             className="post-body-img img-1"
-            src={imgs[0]}
+            src={imgs[0].url}
             alt="img"
           />
         )}
@@ -69,7 +69,7 @@ function ImageGrid({ imgs }) {
                   setActiveImg(i);
                 }}
               >
-                <img className="post-body-img img-2" src={img} alt="img" />
+                <img className="post-body-img img-2" src={img.url} alt="img" />
               </Col>
             ))}
           </Row>
@@ -89,7 +89,7 @@ function ImageGrid({ imgs }) {
             >
               <img
                 className="post-body-img img-3 img-3-1st"
-                src={imgs[0]}
+                src={imgs[0].url}
                 alt="img"
               />
             </Col>
@@ -106,7 +106,7 @@ function ImageGrid({ imgs }) {
                 >
                   <img
                     className="post-body-img img-3"
-                    src={imgs[1]}
+                    src={imgs[1].url}
                     alt="img"
                   />
                 </Col>
@@ -121,7 +121,7 @@ function ImageGrid({ imgs }) {
                 >
                   <img
                     className="post-body-img img-3"
-                    src={imgs[2]}
+                    src={imgs[2].url}
                     alt="img"
                   />
                   {imgs.length > 3 && (

@@ -29,9 +29,9 @@
   padding: 10px;
   border-radius: 10px;
   animation: move_ltr 0.2s ease-in;
-  background-color: var(--primary-color);
+  // background-color: var(--primary-color);
   .comment-title {
-    color: white;
+    color: black;
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -42,7 +42,7 @@
     // border-radius: 10px;
     padding: 0 10px;
     margin-bottom: 10px;
-    background-color: var(--primary-color);
+    // background-color: var(--primary-color);
     display: flex;
     align-items: start;
     .write-comment {
@@ -61,7 +61,7 @@
         margin-right: 10px;
         flex: 1;
         // border-bottom: 1px solid;
-        color: white;
+        color: black;
         font-size: 1.5rem;
         font-weight: 500;
         outline: none;
@@ -74,19 +74,19 @@
   h3 {
     font-size: 1.8rem;
     font-weight: 600;
-    // color: white;
+    // color: black;
   }
   .comment-item {
     border: 1px solid rgba(255, 255, 255, 0.543);
     border-radius: 10px;
     padding: 0 10px;
     margin-bottom: 10px;
-    background-color: var(--primary-color);
+    // background-color: var(--primary-color);
   }
   .user {
     margin: 5px 0;
     width: 100%;
-    color: white;
+    color: black;
     img {
       width: 40px;
       height: 40px;
@@ -109,7 +109,7 @@
   .content {
     margin-left: 50px;
     font-size: 1.5rem;
-    color: white;
+    color: black;
     .action {
       display: flex;
       align-items: center;
@@ -130,7 +130,7 @@
 .content-cm {
   display: block;
   flex: 1;
-  color: white;
+  color: black;
   border-left: 2px solid;
   margin: 0 20px;
   height: 100%;

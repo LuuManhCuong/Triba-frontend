@@ -176,7 +176,7 @@ function Comment({ clear, hiddenInfo }) {
           </div>
         </div>
       )}
-      <div className="comment-input">
+      <div className="comment-input shadow-md">
         <div className="user">
           <img
             src="https://yt3.ggpht.com/WLwD-mQrBHLv1isMGjCdcBv9evwumLpPgOFP14p7OR9FRAuiEERRHV5weM-LdlgPCZPk3qUf=s88-c-k-c0x00ffffff-no-rj"
@@ -194,7 +194,7 @@ function Comment({ clear, hiddenInfo }) {
         </div>
       </div>
       {comments?.map((comment, index) => (
-        <div key={index} className="comment-item">
+        <div key={index} className="comment-item shadow-md">
           <div className="user">
             <img
               src="https://yt3.ggpht.com/WLwD-mQrBHLv1isMGjCdcBv9evwumLpPgOFP14p7OR9FRAuiEERRHV5weM-LdlgPCZPk3qUf=s88-c-k-c0x00ffffff-no-rj"

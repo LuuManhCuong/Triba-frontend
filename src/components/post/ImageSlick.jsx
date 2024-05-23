@@ -22,7 +22,7 @@ function ImageSlick({ imgs, activeImg }) {
           >
             <MdKeyboardArrowLeft />
           </div>
-          <img src={imgs[active]} alt="img" />
+          <img src={imgs[active].url} alt="img" />
           <div
             onClick={() =>
               active >= imgs.length - 1 ? setActive(0) : setActive(active + 1)
@@ -33,7 +33,7 @@ function ImageSlick({ imgs, activeImg }) {
         </div>
       ) : (
         <div className="img-inner">
-          <img src={imgs[active]} alt="img" />
+          <img src={imgs[active].url} alt="img" />
         </div>
       )}
     </div>

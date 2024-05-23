@@ -31,14 +31,14 @@ function Sidebar() {
         <FaUserTag></FaUserTag> Người theo dõi
       </NavLink>
 
-      <NavLink
+      {/* <NavLink
         to="/group"
         className={({ isActive, isPending }) =>
           isPending ? "pending link" : isActive ? "active link" : " link"
         }
       >
         <TiGroup></TiGroup> Nhóm
-      </NavLink>
+      </NavLink> */}
 
       <NavLink
         to="/cooperate"

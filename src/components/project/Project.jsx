@@ -3,6 +3,10 @@ import FormCreateJob from "../forms/FormCreateJob";
 import "./project.scss";
 import CardJob from "../card/CardJob";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { counterSelector } from "../../redux-tookit/selector";
 
 const Avatar = ({ src, alt }) => (
   <img src={src} className="img-fluid avatar-xxl rounded-circle" alt={alt} />
@@ -111,7 +115,7 @@ const Project = () => {
     );
   }, [dataApply]);
 
-  console.log("active: ", pro);
+  // console.log("active: ", pro);
 
   const nav = [
     { id: 1, title: "Bài viết của tôi" },
@@ -120,7 +124,8 @@ const Project = () => {
     { id: 4, title: "Chỉnh sửa hồ sơ" },
   ];
   const [jobs, setJobs] = useState([]);
-
+  let { activePr } = useParams();
+  const counter = useSelector(counterSelector);
   useEffect(() => {
     const fetchData = async () => {
       const userId = localStorage.getItem("userId");
@@ -155,7 +160,7 @@ const Project = () => {
       fetchDataApply();
     } else {
     }
-  }, [activeCpn]);
+  }, [activeCpn, counter]);
 
   console.log("data apply: ", dataApply);
 
@@ -240,7 +245,7 @@ const Project = () => {
 
           {/* card */}
           {activeCpn === 1 && (
-            <div className="card" style={{ height: "70vh", overflow: "auto" }}>
+            <div className="card" style={{ height: "100vh", overflow: "auto" }}>
               <div className="tab-content p-4">
                 <div
                   className="tab-pane active show"
@@ -249,7 +254,7 @@ const Project = () => {
                 >
                   {/* <Projects projects={projects} /> */}
                   {jobs?.length > 0 ? (
-                    <CardJob jobs={jobs}></CardJob>
+                    <CardJob jobs={jobs} owner={true}></CardJob>
                   ) : (
                     <div>Bạn chưa đăng bài viết nào</div>
                   )}

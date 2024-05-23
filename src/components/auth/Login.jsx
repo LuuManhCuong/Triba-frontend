@@ -63,7 +63,7 @@ function Login() {
       setLogErr("Mật khẩu xác thực chưa đúng");
     }
   };
-
+  const [wrongAc, setWrongAc] = useState();
   function onLogin() {
     console.log(email, password);
 
@@ -77,7 +77,8 @@ function Login() {
       axios
         .post("http://localhost:8080/api/v1/auth/sigin", account)
         .then(function (response) {
-          console.log("Response:", response.data);
+          console.log("Response:", response.data?.message);
+          setWrongAc(response.data?.message);
           localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("refresh_token", response.data.refresh_token);
           localStorage.setItem("userId", response.data.user.id);
@@ -85,7 +86,7 @@ function Login() {
           dispatch(accountSlice.actions.login(response.data));
         })
         .then(() => {
-          navigate(`/`);
+          navigate(`/index`);
         })
 
         .catch(function (error) {
@@ -134,6 +135,18 @@ function Login() {
               <div className="form-group">
                 <div>
                   <div>
+                    {wrongAc && (
+                      <span
+                        style={{
+                          color: "red",
+                          marginLeft: "10spanx",
+                          marginTop: "5px",
+                        }}
+                        role="alert"
+                      >
+                        {wrongAc}
+                      </span>
+                    )}
                     {email?.trim() <= 0 ? (
                       <span
                         style={{

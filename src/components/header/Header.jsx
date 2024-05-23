@@ -36,14 +36,14 @@ function Header() {
             <AiFillHome />
           </NavLink>
 
-          <NavLink
+          {/* <NavLink
             to="/group"
             className={({ isActive, isPending }) =>
               isPending ? "pending link" : isActive ? "active link" : " link"
             }
           >
             <TiGroup></TiGroup>
-          </NavLink>
+          </NavLink> */}
 
           <NavLink
             to="/cooperate"

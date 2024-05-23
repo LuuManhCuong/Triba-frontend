@@ -69,8 +69,9 @@ function Post() {
     autoplaySpeed: 3000,
     cssEase: "linear",
   };
+
   useEffect(() => {
-    console.log("top: " + scrollTop);
+    // console.log("top: " + scrollTop);
     const handleScroll = () => {
       const { scrollTop, clientHeight, scrollHeight } = postRef.current;
       setScrollTop(scrollTop);
@@ -118,7 +119,7 @@ function Post() {
     filter.selectedLocation,
     filter.selectedWorkType,
   ]);
-  console.log("size: " + size);
+  // console.log("size: " + size);
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -140,11 +141,11 @@ function Post() {
       filter.selectedLocation ||
       filter.selectedWorkType
     ) {
-      console.log("filter");
+      // console.log("filter");
       setIsLoading(true);
       fetchJobs();
     } else {
-      console.log("get all");
+      // console.log("get all");
       setIsLoading(true);
       fetchData();
     }
@@ -154,7 +155,7 @@ function Post() {
     const userId = localStorage.getItem("userId");
     // Kiểm tra xem token có tồn tại không
     const token = localStorage.getItem("access_token");
-    console.log("token: ", token);
+    // console.log("token: ", token);
     if (!token) {
       console.error("Token is not available.");
       return;
@@ -233,7 +234,7 @@ function Post() {
       <Row>
         <Col className="post-wrap" xs={6} ref={postRef}>
           {jobs?.map((job, i) => (
-            <div key={i} className="post">
+            <div key={i} className="post shadow-md">
               <div className="post-head">
                 <div className="user">
                   <img
@@ -281,7 +282,7 @@ function Post() {
                   ))}
                 </p> */}
 
-                <ImageGrid imgs={imgs}></ImageGrid>
+                <ImageGrid imgs={job?.images}></ImageGrid>
               </div>
 
               <div className="post-footer">
@@ -330,12 +331,12 @@ function Post() {
                     Chi tiết
                   </div>
                 </div>
-                <div className="detail footer-action">
+                {/* <div className="detail footer-action">
                   <h3 className="count">0</h3>
                   <div>
                     <RiMessengerFill></RiMessengerFill> Trao đổi
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           ))}
