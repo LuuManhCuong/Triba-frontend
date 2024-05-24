@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { showComponentSelector } from "../../redux-tookit/selector";
 import { showComponentSlice } from "../../redux-tookit/reducer/showComponent";
 import axios from "axios";
+import ImageGrid from "./ImageGrid";
 
 function PostDetail({ imgs }) {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ function PostDetail({ imgs }) {
             <h2 className="content">{jobDetail.title}</h2>
             <p className="content">{jobDetail.description}</p>
 
-            {imgs?.length > 1 ? (
+            {/* {imgs?.length > 1 ? (
               <Slider {...settings} className="detail-img-slick">
                 {imgs.map((e, i) => (
                   <div
@@ -120,7 +121,9 @@ function PostDetail({ imgs }) {
                 src={imgs[0]}
                 alt="img"
               />
-            )}
+            )} */}
+
+            <ImageGrid imgs={jobDetail.images}></ImageGrid>
           </div>
           <Comment hiddenInfo={true} />
         </div>

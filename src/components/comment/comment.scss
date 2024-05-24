@@ -28,7 +28,8 @@
   margin-top: 10px;
   padding: 10px;
   border-radius: 10px;
-  animation: move_ltr 0.2s ease-in;
+  animation: move_ltr 0.1s ease;
+  transition: all ease;
   // background-color: var(--primary-color);
   .comment-title {
     color: black;

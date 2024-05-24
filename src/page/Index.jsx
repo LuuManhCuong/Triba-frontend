@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/wraper/Header";
 import Banner from "../components/wraper/Banner";
+import WeeklyOffers from "../components/wraperAbout/WeeklyOffers";
+
 import VisitCountry from "../components/wraper/VisitCountry";
 import CallToAction from "../components/wraper/CallToAction";
 import Footer from "../components/wraper/Footer";
@@ -17,7 +19,7 @@ function Index() {
 
   function handleChange(event: React.ChangeEvent<unknown>, value: number) {
     setPage(value);
-    // window.scrollTo({ top: 300, behavior: "smooth" });
+    window.scrollTo({ top: 500, behavior: "smooth" });
   }
   const fetchData = async () => {
     try {
@@ -43,6 +45,7 @@ function Index() {
     <div>
       <Header />
       <Banner />
+      {/* <WeeklyOffers></WeeklyOffers> */}
 
       <div className="row title-gr">
         <div className="col-lg-5">
@@ -60,7 +63,7 @@ function Index() {
 
       <div style={{ margin: "50px 100px" }}>
         {jobs?.map((job, i) => (
-          <VisitCountry  key={i} job={job} />
+          <VisitCountry key={i} job={job} />
         ))}
       </div>
 

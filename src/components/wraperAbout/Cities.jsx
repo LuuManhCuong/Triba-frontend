@@ -29,7 +29,7 @@ function Cities() {
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="http://127.0.0.1:5500/assets/images/cities-02.jpg"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
                         alt=""
                       />
                       <h4>Havana</h4>
@@ -38,7 +38,7 @@ function Cities() {
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="http://127.0.0.1:5500/assets/images/cities-02.jpg"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
                         alt=""
                       />
                       <h4>Havana</h4>
@@ -47,7 +47,7 @@ function Cities() {
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="http://127.0.0.1:5500/assets/images/cities-02.jpg"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
                         alt=""
                       />
                       <h4>Havana</h4>
@@ -56,7 +56,7 @@ function Cities() {
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="http://127.0.0.1:5500/assets/images/cities-02.jpg"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
                         alt=""
                       />
                       <h4>Havana</h4>

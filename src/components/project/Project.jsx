@@ -61,7 +61,13 @@ const ProjectCard = ({ project, index }) => (
           </div>
           <div className="align-self-end">
             <span
-              className={`badge badge-soft-${project.statusColor} p-2 team-status`}
+              className={`p-2 team-status`}
+              style={{
+                background: project.status === "APPROVED" ? "green" : "red",
+                color: "white",
+                borderRadius: "10px",
+                padding: "0 5px",
+              }}
             >
               {project.status}
             </span>
@@ -162,7 +168,7 @@ const Project = () => {
     }
   }, [activeCpn, counter]);
 
-  console.log("data apply: ", dataApply);
+  // console.log("data apply: ", dataApply);
 
   return (
     <div className="project-container">

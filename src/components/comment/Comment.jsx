@@ -10,9 +10,11 @@ import { showComponentSlice } from "../../redux-tookit/reducer/showComponent";
 import axios from "axios";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import { ToastContainer, toast } from "react-toastify";
 
-function Comment({ clear, hiddenInfo }) {
+function Comment({ clear, hiddenInfo, homeJobId }) {
   const dispatch = useDispatch();
+
   const { jobId } = useSelector(showComponentSelector);
   const textareaRef = useRef(null);
   const [comments, setComments] = useState([]);
@@ -96,6 +98,13 @@ function Comment({ clear, hiddenInfo }) {
 
   const handleAddComment = () => {
     const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      toast.warning(`Vui lòng đăng nhập!`);
+      console.error("Token is not available.");
+      return;
+    }
     if (newComment.trim() && userId && isConnected && stompClient) {
       const commentData = {
         jobId,
@@ -118,6 +127,8 @@ function Comment({ clear, hiddenInfo }) {
   // );
   return (
     <div className="comment-block">
+      <ToastContainer />
+
       {!hiddenInfo && (
         <div className="wrap-header-comment ">
           <div className="comment-title">
@@ -189,7 +200,7 @@ function Comment({ clear, hiddenInfo }) {
               placeholder="Viết bình luận của bạn..."
               onChange={handleChange}
             />
-            <button onClick={handleAddComment}>Gửi</button>
+            <button onClick={handleAddComment}>Send</button>
           </div>
         </div>
       </div>

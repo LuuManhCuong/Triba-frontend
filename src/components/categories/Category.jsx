@@ -101,6 +101,15 @@ function Category() {
       <div className="filter">
         <form onSubmit={handleSubmit}>
           <div className="sort">
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ background: "rgb(34 179 193)", margin: "0 5px" }}
+            >
+              <a style={{ color: "white" }} href="/">
+                Refresh
+              </a>
+            </Button>
             <Box className="sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <NativeSelect
@@ -188,9 +197,9 @@ function Category() {
             <Button
               type="submit"
               variant="contained"
-              style={{ background: "#735e59" }}
+              style={{ background: "rgb(34 179 193)" }}
             >
-              Tìm kiếm
+              Search
             </Button>
           </div>
         </form>

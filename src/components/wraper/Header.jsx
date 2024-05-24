@@ -5,7 +5,7 @@ import "../../assets/css/templatemo-woox-travel.css";
 // import "../../assets/css/owl.css";
 import "../../assets/css/animate.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { IoLogoFirebase } from "react-icons/io5";
 function Header() {
   return (
     <header className="header-area header-sticky">
@@ -13,8 +13,19 @@ function Header() {
         <div className="row">
           <div className="col-12">
             <nav className="main-nav">
-              <a href="index.html" className="logo">
-                <img src={logo} alt="Logo" />
+              <a
+                href="/index"
+                className="logo"
+                style={{
+                  color: "white",
+                  fontSize: "3rem",
+                  display: "flex",
+                  fontWeight: "600",
+                  justifyItems: "center",
+                }}
+              >
+                {/* <img src={logo} alt="Logo" /> */}
+                <IoLogoFirebase /> Triba
               </a>
               <ul className="nav">
                 <li>
@@ -33,7 +44,7 @@ function Header() {
                   <a href="/deals">Deals</a>
                 </li>
                 <li>
-                  <a href="/reservation">Reservation</a>
+                  <a href="/admin">Admin</a>
                 </li>
                 <li>
                   <a href="/new-post">Post</a>

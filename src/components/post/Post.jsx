@@ -3,7 +3,7 @@ import "./post.scss";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import { IoIosMenu } from "react-icons/io";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FaRegComments } from "react-icons/fa";
 import { RiMessengerFill } from "react-icons/ri";
 import { BiDetail } from "react-icons/bi";
@@ -19,6 +19,7 @@ import Modal from "react-bootstrap/Modal";
 import LinearProgress from "@mui/joy/LinearProgress";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  accountSelector,
   countImgSliceSelector,
   filterSelector,
   showComponentSelector,
@@ -36,6 +37,7 @@ function Post() {
 
   const component = useSelector(showComponentSelector);
   const { value } = useSelector(countImgSliceSelector);
+  const account = useSelector(accountSelector);
   const [jobs, setJobs] = useState([]);
   const [activeImg, setActiveImg] = useState(0);
   const [showImgs, setShowImgs] = useState([]);
@@ -46,6 +48,8 @@ function Post() {
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(1);
   const [size, setSize] = useState(4);
+  let userId = localStorage.getItem("userId");
+  const [liked, setLiked] = useState(); // Trạng thái like
 
   const postRef = useRef(null);
 
@@ -69,9 +73,13 @@ function Post() {
     autoplaySpeed: 3000,
     cssEase: "linear",
   };
+  useEffect(() => {
+    setLiked(
+      jobs.some((job) => job.likes.some((like) => like.user.userId === userId))
+    );
+  }, [jobs]);
 
   useEffect(() => {
-    // console.log("top: " + scrollTop);
     const handleScroll = () => {
       const { scrollTop, clientHeight, scrollHeight } = postRef.current;
       setScrollTop(scrollTop);
@@ -79,13 +87,9 @@ function Post() {
       setScrollHeight(scrollHeight);
     };
     postRef.current.addEventListener("scroll", handleScroll);
-    // Kiểm tra khi người dùng cuộn đến cuối trang
     if (scrollTop + 1 + clientHeight >= scrollHeight) {
       setSize((prev) => prev + 4);
     }
-    // return () => {
-    //   postRef.current.removeEventListener("scroll", handleScroll);
-    // };
   }, [scrollTop]);
 
   const fetchJobs = useCallback(() => {
@@ -101,8 +105,8 @@ function Post() {
     axios
       .get(url)
       .then((response) => {
-        // console.log("data: ", response.data);
         setJobs(response.data.content);
+
         setTotalPage(response.data.totalPages);
         setIsLoading(false);
         postRef.current.scrollTop = 0;
@@ -119,13 +123,12 @@ function Post() {
     filter.selectedLocation,
     filter.selectedWorkType,
   ]);
-  // console.log("size: " + size);
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/api/v1/user/job?page=${page}&size=${size}`
       );
-      // console.log("dat: ", response.data);
       setJobs(response.data.content);
       setTotalPage(response.data.totalPages);
       setIsLoading(false);
@@ -133,7 +136,9 @@ function Post() {
       console.error("Error fetching data:", error);
     }
   };
+
   !size && (postRef.current.scrollTop = 0);
+
   useEffect(() => {
     if (
       filter.selectedIndustry ||
@@ -141,44 +146,103 @@ function Post() {
       filter.selectedLocation ||
       filter.selectedWorkType
     ) {
-      // console.log("filter");
       setIsLoading(true);
       fetchJobs();
     } else {
-      // console.log("get all");
       setIsLoading(true);
       fetchData();
     }
   }, [fetchJobs, filter]);
 
-  function handleApplyJob(jobId) {
-    const userId = localStorage.getItem("userId");
-    // Kiểm tra xem token có tồn tại không
+  const sendEmail = async (email, subject, text) => {
     const token = localStorage.getItem("access_token");
-    // console.log("token: ", token);
     if (!token) {
       console.error("Token is not available.");
       return;
     }
-    // Thêm token vào headers của yêu cầu
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/send-email",
+        {
+          to: email,
+          subject: subject,
+          text: text,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Email sent successfully");
+        toast.success("Email sent successfully");
+      } else {
+        console.error("Failed to send email: ", response);
+        toast.error("Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error occurred while sending email:", error);
+      toast.error("Error occurred while sending email");
+    }
+  };
+
+  function handleApplyJob(job) {
+    console.log("applying");
+    const userId = localStorage.getItem("userId");
+    const userEmail = localStorage.getItem("email");
+    const employerEmail = job.user.email;
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      toast.warning(`Vui lòng đăng nhập để ứng tuyển!`);
+      console.error("Token is not available.");
+      return;
+    }
+    if (userId === job?.user?.userId) {
+      // console.log("lko chạy ", job?.user?.userId);
+
+      toast.warning(`Bạn không thể ứng tuyển bài viết của mình!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    let url = `http://localhost:8080/api/v1/user/job/apply?jobId=${jobId}&userId= ${userId}`;
-    // console.log(url);
+    let url = `http://localhost:8080/api/v1/user/job/apply?jobId=${job.jobId}&userId=${userId}`;
 
     axios
-      .post(
-        `http://localhost:8080/api/v1/user/job/apply?jobId=${jobId}&userId= ${userId}`,
-        config
-      )
+      .post(url, {}, config)
       .then((response) => {
+        console.log("đagn chạy");
+        sendEmail(
+          userEmail,
+          "Ứng tuyển công việc thành công",
+          `Bạn đã ứng tuyển thành công vào công việc: ${job?.title}.`
+        );
+        sendEmail(
+          employerEmail,
+          "Có ứng viên mới ứng tuyển",
+          `Ứng viên ${account.firstName} ${account.lastName} đã ứng tuyển vào công việc: ${job?.title}.`
+        );
         toast.success(
           `Ứng tuyển thành công. Nhà tuyển dụng sẽ sớm liên lạc với bạn!`,
           {
             position: "top-right",
+            top: 533,
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -204,10 +268,30 @@ function Post() {
         return null;
       });
   }
+
+  const handleLike = async (jobId) => {
+    // Thực hiện yêu cầu POST đến backend
+    // console.log("like: ", jobId);
+    const token = localStorage.getItem("access_token");
+    
+    if (!token) {
+      toast.warning(`Vui lòng đăng nhập!`);
+      console.error("Token is not available.");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/user/like?jobId=${jobId}&userId=${userId}`
+      );
+      console.log(response.data);
+      setLiked(response.data);
+      // Kiểm tra nếu yêu cầu thành công
+    } catch (error) {
+      console.error("Error while sending like request:", error);
+    }
+  };
   return (
     <>
-      <ToastContainer />
-
       <Modal
         p
         className="moda"
@@ -226,13 +310,14 @@ function Post() {
           </button>
         </Modal.Title>
         <Modal.Body>
-          {/* <img src={showImgs[0]} alt="img" /> */}
           <ImageSlick imgs={showImgs} activeImg={activeImg}></ImageSlick>
         </Modal.Body>
       </Modal>
 
       <Row>
         <Col className="post-wrap" xs={6} ref={postRef}>
+          <ToastContainer style={{ zIndex: 23 }} />
+
           {jobs?.map((job, i) => (
             <div key={i} className="post shadow-md">
               <div className="post-head">
@@ -252,7 +337,8 @@ function Post() {
                     <p className="time">{job.createAt}</p>
                   </div>
                 </div>
-                <div className="salary">{job.salary} VND</div>
+
+                <div className="salary">${job.salary} </div>
                 <div className="action">
                   <IoIosMenu />
                 </div>
@@ -261,39 +347,37 @@ function Post() {
               <div className="post-body">
                 <h2 className="content">{job.title}</h2>
                 <p className="content">{job.description}</p>
-                {/* <p className="content">
-                  {job.industries.map((e, i) => (
-                    <p key={i}>{e.name + " "}</p>
-                  ))}
-                </p>
-                <p className="content">
-                  {job.locations.map((e, i) => (
-                    <p key={i}>{e.name + " "}</p>
-                  ))}
-                </p>
-                <p className="content">
-                  {job.positions.map((e, i) => (
-                    <p key={i}>{e.name + " "}</p>
-                  ))}
-                </p>
-                <p className="content">
-                  {job.workTypes.map((e, i) => (
-                    <p key={i}>{e.name + " "}</p>
-                  ))}
-                </p> */}
-
                 <ImageGrid imgs={job?.images}></ImageGrid>
               </div>
 
               <div className="post-footer">
                 <div className="react footer-action">
-                  <h3 className="count">133</h3>
-                  <div>
-                    <FaRegHeart></FaRegHeart> Yêu thích
+                  {/* <h3 className="count">133</h3> */}
+                  <div
+                    onClick={() => handleLike(job?.jobId)}
+                    style={{
+                      color: liked && "var(--primary-color)",
+                      userSelect: "none",
+                    }}
+                  >
+                    {!liked ? (
+                      <>
+                        <FaRegHeart></FaRegHeart> Like
+                      </>
+                    ) : (
+                      <>
+                        <FaHeart
+                          style={{
+                            color: "red",
+                          }}
+                        />{" "}
+                        Like
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="comment footer-action">
-                  <h3 className="count">133</h3>
+                  {/* <h3 className="count">133</h3> */}
                   <div
                     onClick={() => {
                       dispatch(
@@ -305,18 +389,18 @@ function Post() {
                     }}
                   >
                     <FaRegComments></FaRegComments>
-                    Bình luận
+                    Comment
                   </div>
                 </div>
                 <div className="share footer-action">
-                  <h3 className="count">133</h3>
-                  <div onClick={() => handleApplyJob(job.jobId)}>
+                  {/* <h3 className="count">133</h3> */}
+                  <div onClick={() => handleApplyJob(job)}>
                     <PiShareFatBold></PiShareFatBold>
-                    Ứng tuyển
+                    Apply
                   </div>
                 </div>
                 <div className="detail footer-action">
-                  <h3 className="count">133</h3>
+                  {/* <h3 className="count">133</h3> */}
                   <div
                     onClick={() => {
                       dispatch(
@@ -328,15 +412,9 @@ function Post() {
                     }}
                   >
                     <BiDetail></BiDetail>
-                    Chi tiết
+                    Detail
                   </div>
                 </div>
-                {/* <div className="detail footer-action">
-                  <h3 className="count">0</h3>
-                  <div>
-                    <RiMessengerFill></RiMessengerFill> Trao đổi
-                  </div>
-                </div> */}
               </div>
             </div>
           ))}

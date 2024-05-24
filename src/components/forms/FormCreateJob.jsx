@@ -10,6 +10,8 @@ import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { LinearProgress } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { counterSlice } from "../../redux-tookit/reducer/counterSlice";
 
 const jobCategories = {
   industries: [
@@ -74,6 +76,7 @@ const initialFormData = {
 
 function FromCreateJob({ jobEdit }) {
   // console.log("jobEdit: ", jobEdit);
+  const dispatch = useDispatch();
 
   const [selectedWorkType, setSelectedWorkType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -288,7 +291,8 @@ function FromCreateJob({ jobEdit }) {
               progress: undefined,
               theme: "light",
             });
-            navigate(`/personal?activePr=${1}`);
+            navigate(`/personal`);
+            dispatch(counterSlice.actions.increase());
           })
           .catch((error) => {
             setIsLoading(false);
@@ -309,15 +313,16 @@ function FromCreateJob({ jobEdit }) {
       .then((urls) => {
         // console.log("Uploaded URLs: ", urls);
         const token = localStorage.getItem("access_token");
-        const owerId = localStorage.getItem("userId");
-        const sendData = { ...formData, images: urls, ownerId: owerId };
-        console.log("Data:", sendData);
+        const ownerId = localStorage.getItem("userId");
+        const sendData = { ...formData, images: urls, ownerId: ownerId };
+        // console.log("Data:", sendData);
         // Gửi dữ liệu lên server
 
         console.log("token: ", token);
         // Kiểm tra xem token có tồn tại không
         if (!token) {
           console.error("Token is not available.");
+          setIsLoading(false);
           return;
         }
 
@@ -330,8 +335,8 @@ function FromCreateJob({ jobEdit }) {
 
         // Gửi dữ liệu lên server với token đã được xác thực
         axios
-          .post(
-            `http://localhost:8080/api/v1/user/job/update/${jobEdit.jobId} `,
+          .put(
+            `http://localhost:8080/api/v1/user/job/update/${jobEdit.jobId}`,
             sendData,
             config
           )
@@ -350,19 +355,19 @@ function FromCreateJob({ jobEdit }) {
               theme: "light",
             });
             navigate(`/personal`);
+            dispatch(counterSlice.actions.increase());
           })
           .catch((error) => {
             setIsLoading(false);
-
             console.error("Error sending data to server:", error);
           });
       })
       .catch((error) => {
         setIsLoading(false);
-
-        console.error("Error in handleAddJob:", error);
+        console.error("Error in handleUpdateJob:", error);
       });
   };
+
   return (
     <div className="layout-wrapper layout-content-navbar">
       <Modal

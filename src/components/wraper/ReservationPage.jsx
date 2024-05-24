@@ -1,6 +1,9 @@
 import React from "react";
+import { FaRegUserCircle } from "react-icons/fa";
+import { FaFileSignature } from "react-icons/fa6";
+import { MdWork } from "react-icons/md";
 
-function ReservationPage() {
+function ReservationPage({ totalApplications, totalUsers, totalJobs }) {
   return (
     <div>
       {/* Second Page Heading */}
@@ -8,15 +11,15 @@ function ReservationPage() {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <h4>Book Prefered Deal Here</h4>
-              <h2>Make Your Reservation</h2>
+              <h4>Wellcome To</h4>
+              <h2>Admin Dashboard</h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt uttersi labore et dolore magna aliqua
-                is ipsum suspendisse ultrices gravida
+                Your work is going to fill a large part of your life, and the
+                only way to be truly satisfied is to do what you believe is
+                great work.
               </p>
               <div className="main-button">
-                <a href="about.html">Discover More</a>
+                {/* <a href="about.html">Discover More</a> */}
               </div>
             </div>
           </div>
@@ -29,51 +32,39 @@ function ReservationPage() {
           <div className="row">
             <div className="col-lg-4 col-sm-6">
               <div className="info-item">
-                <i className="fa fa-phone"></i>
-                <h4>Make a Phone Call</h4>
-                <a href="#">+123 456 789 (0)</a>
+                <FaRegUserCircle />
+                USERS
+                <h4>{totalUsers} </h4>
+                <a href="#">
+                  The only way to achieve the impossible is to believe it is
+                  possible.
+                </a>
               </div>
             </div>
             <div className="col-lg-4 col-sm-6">
               <div className="info-item">
-                <i className="fa fa-envelope"></i>
-                <h4>Contact Us via Email</h4>
-                <a href="#">company@email.com</a>
+                <MdWork /> JOBS
+                <h4>{totalJobs} </h4>
+                <a href="#">
+                  Choose a job you love, and you will never have to work a day
+                  in your life.
+                </a>
               </div>
             </div>
             <div className="col-lg-4 col-sm-6">
               <div className="info-item">
-                <i className="fa fa-map-marker"></i>
-                <h4>Visit Our Offices</h4>
-                <a href="#">24th Street North Avenue London, UK</a>
+                <FaFileSignature />
+                APPLICATIONS
+                <h4>{totalApplications} </h4>
+                <a href="#">
+                  Success is the result of preparation, hard work, and learning
+                  from failure.
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      {/* <footer>
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <p>
-                Copyright © 2036 <a href="#">WoOx Travel</a> Company. All rights
-                reserved.
-                <br />
-                Design:{" "}
-                <a
-                  href="https://templatemo.com"
-                  target="_blank"
-                  title="free CSS templates"
-                >
-                  TemplateMo
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer> */}
     </div>
   );
 }

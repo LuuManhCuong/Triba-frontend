@@ -26,7 +26,7 @@ function App() {
       <Route path="/index" element={<Index />} />
       <Route path="/about" element={<About />} />
       <Route path="/deals" element={<Deals />} />
-      <Route path="/reservation" element={<Reservation />} />
+      <Route path="/admin" element={<Reservation />} />
       <Route path="/new-post" element={<CreateJob />} />
 
       <Route path="/account" element={<Account />} />
