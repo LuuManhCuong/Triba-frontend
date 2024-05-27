@@ -9,6 +9,7 @@ import Footer from "../components/wraper/Footer";
 import { Pagination } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import CategoryArea from "../JobBroadComponent/CategoryArea";
 
 function Index() {
   const [page, setPage] = useState(0);
@@ -18,8 +19,9 @@ function Index() {
   const [isLoading, setIsLoading] = useState(true);
 
   function handleChange(event: React.ChangeEvent<unknown>, value: number) {
-    setPage(value);
-    window.scrollTo({ top: 500, behavior: "smooth" });
+    setPage(value > 1 ? value - 1 : value === 1 && 0);
+    console.log("value: ", value);
+    //   window.scrollTo({ top: 500, behavior: "smooth" });
   }
   const fetchData = async () => {
     try {
@@ -45,6 +47,9 @@ function Index() {
     <div>
       <Header />
       <Banner />
+      <div className="job-broad">
+        <CategoryArea></CategoryArea>
+      </div>
       {/* <WeeklyOffers></WeeklyOffers> */}
 
       <div className="row title-gr">
@@ -72,7 +77,7 @@ function Index() {
           className="pagination"
           count={totalPage}
           color="primary"
-          page={page || 1}
+          page={page === 0 ? 1 : page + 1}
           onChange={handleChange}
         />
       </Stack>

@@ -15,18 +15,18 @@ import { counterSlice } from "../../redux-tookit/reducer/counterSlice";
 
 const jobCategories = {
   industries: [
-    "Công nghệ thông tin (IT)",
-    "Kế toán / Kiểm toán",
+    "Công nghệ thông tin",
+    "Kế toán",
     "Nhân sự",
-    "Marketing / Quảng cáo",
-    "Kinh doanh / Bán hàng",
-    "Giáo dục / Đào tạo",
-    "Y tế / Dược phẩm",
-    "Sản xuất / Vận hành sản xuất",
-    "Logistics / Chuỗi cung ứng",
+    "Marketing ",
+    "Kinh doanh",
+    "Giáo dục",
+    "Y tế",
+    "Sản xuất",
+    "Logistics",
     "Xây dựng",
-    "Khách sạn / Nhà hàng",
-    "Ngân hàng / Tài chính",
+    "Khách sạn",
+    "Ngân hàng ",
   ],
   positions: [
     "Thực tập sinh",
@@ -68,7 +68,7 @@ const initialFormData = {
   updateAt: "2023-05-16",
   deadline: "2023-06-16",
   hastag: "Hashtag",
-  industryIds: ["3"],
+  industriesIds: ["3"],
   positionIds: ["3"],
   locationIds: ["3"],
   workTypeIds: ["3"],
@@ -80,7 +80,7 @@ function FromCreateJob({ jobEdit }) {
 
   const [selectedWorkType, setSelectedWorkType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [selectedIndustries, setSelectedIndustries] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
   const [preview, setPreview] = useState();
 
@@ -94,6 +94,7 @@ function FromCreateJob({ jobEdit }) {
         description: jobEdit.description,
         address: jobEdit.address,
         salary: jobEdit.salary,
+
         // images: imageUrls,
       };
       return dataEdit;
@@ -106,8 +107,10 @@ function FromCreateJob({ jobEdit }) {
   useEffect(() => {
     if (jobEdit) {
       // Lấy ra tên của các industries
-      const industryNames = jobEdit.industries.map((industry) => industry.name);
-      // console.log("Industry Names:", industryNames);
+      const industriesNames = jobEdit.industries.map(
+        (industries) => industries.name
+      );
+      // console.log("Industries Names:", industriesNames);
 
       // Lấy ra tên của các locations
       const locationNames = jobEdit.locations.map((location) => location.name);
@@ -122,7 +125,7 @@ function FromCreateJob({ jobEdit }) {
 
       setSelectedWorkType(worktypeNames);
       setSelectedLocation(locationNames);
-      setSelectedIndustry(industryNames);
+      setSelectedIndustries(industriesNames);
       setSelectedPosition(positionNames);
     }
   }, [jobEdit]);
@@ -158,18 +161,20 @@ function FromCreateJob({ jobEdit }) {
     }
   };
 
-  const handleIndustryChange = (e) => {
+  const handleIndustriesChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
-      if (selectedIndustry.length < 3) {
-        setSelectedIndustry([...selectedIndustry, value]);
+      if (selectedIndustries.length < 3) {
+        setSelectedIndustries([...selectedIndustries, value]);
       } else {
         // Remove the first selected item and add the new one
-        const newSelectedIndustry = [...selectedIndustry.slice(1), value];
-        setSelectedIndustry(newSelectedIndustry);
+        const newSelectedIndustries = [...selectedIndustries.slice(1), value];
+        setSelectedIndustries(newSelectedIndustries);
       }
     } else {
-      setSelectedIndustry(selectedIndustry.filter((type) => type !== value));
+      setSelectedIndustries(
+        selectedIndustries.filter((type) => type !== value)
+      );
     }
   };
 
@@ -211,12 +216,17 @@ function FromCreateJob({ jobEdit }) {
   useEffect(() => {
     setFormData({
       ...formData,
-      industries: selectedIndustry,
+      industries: selectedIndustries,
       locations: selectedLocation,
       positions: selectedPosition,
       workTypes: selectedWorkType,
     });
-  }, [selectedIndustry, selectedLocation, selectedPosition, selectedWorkType]);
+  }, [
+    selectedIndustries,
+    selectedLocation,
+    selectedPosition,
+    selectedWorkType,
+  ]);
   // console.log("urls: ", urls);
   const uploadImages = () => {
     return new Promise((resolve, reject) => {
@@ -250,23 +260,68 @@ function FromCreateJob({ jobEdit }) {
   };
   const [isLoading, setIsLoading] = useState(false);
   const handleAddJob = () => {
-    setIsLoading(true);
     uploadImages()
       .then((urls) => {
         // console.log("Uploaded URLs: ", urls);
         const token = localStorage.getItem("access_token");
         const owerId = localStorage.getItem("userId");
         const sendData = { ...formData, images: urls, ownerId: owerId };
-        console.log("Data:", sendData);
+        console.log("Data send:", sendData);
         // Gửi dữ liệu lên server
 
-        console.log("token: ", token);
+        // console.log("token: ", token);
         // Kiểm tra xem token có tồn tại không
         if (!token) {
           console.error("Token is not available.");
           return;
         }
 
+        const dt = {
+          address: "Hà Nội",
+          companyName: "ACC Group",
+          description:
+            "Join our team and embark on an exciting journey of growth and opportunity.",
+          images: [
+            "https://res.cloudinary.com/djcamu6kz/image/upload/v1716744628/zsz6iojbiwel26kjfeno.jpg",
+            "https://res.cloudinary.com/djcamu6kz/image/upload/v1716744628/dj1qhdlv2y6etiikvypq.jpg",
+            "https://res.cloudinary.com/djcamu6kz/image/upload/v1716744628/twipndqqhrlqogvf7s2a.webp",
+          ],
+          industries: ["Kế toán", "Công nghệ thông tin", "Nhân sự"],
+          locations: ["Hồ Chí Minh", "Hà Nội"],
+          ownerId: "41facd73-2ac2-491f-a06e-4359d3b286ee",
+          positions: ["Nhân viên", "Thực tập sinh", "Chuyên viên"],
+          salary: "114",
+          title: "Tuyển dụng Nhân viên Kinh doanh",
+          workTypes: ["Bán thời gian", "Toàn thời gian"],
+        };
+
+        // Kiểm tra xem có dữ liệu các trường không
+        if (
+          !formData.title ||
+          !formData.description ||
+          !formData.address ||
+          !formData.salary ||
+          !urls.length ||
+          !selectedIndustries.length ||
+          !selectedLocation.length ||
+          !selectedPosition.length ||
+          !selectedWorkType.length
+        ) {
+          // Nếu không đầy đủ, hiển thị thông báo lỗi
+          toast.error("Vui lòng điền đầy đủ thông tin để đăng bài", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
+        }
+
+        setIsLoading(true);
         // Thêm token vào headers của yêu cầu
         const config = {
           headers: {
@@ -278,7 +333,7 @@ function FromCreateJob({ jobEdit }) {
         axios
           .post("http://localhost:8080/api/v1/user/job/add", sendData, config)
           .then((response) => {
-            console.log("Response from server:", response.data);
+            // console.log("Response from server:", response.data);
             // Xử lý phản hồi từ server tại đây nếu cần
             setIsLoading(false);
             toast.success("Đăng bài thành công", {
@@ -315,10 +370,10 @@ function FromCreateJob({ jobEdit }) {
         const token = localStorage.getItem("access_token");
         const ownerId = localStorage.getItem("userId");
         const sendData = { ...formData, images: urls, ownerId: ownerId };
-        // console.log("Data:", sendData);
+        console.log("Data:", sendData);
         // Gửi dữ liệu lên server
 
-        console.log("token: ", token);
+        // console.log("token: ", token);
         // Kiểm tra xem token có tồn tại không
         if (!token) {
           console.error("Token is not available.");
@@ -341,7 +396,7 @@ function FromCreateJob({ jobEdit }) {
             config
           )
           .then((response) => {
-            console.log("Response from server:", response.data);
+            // console.log("Response from server:", response.data);
             // Xử lý phản hồi từ server tại đây nếu cần
             setIsLoading(false);
             toast.success("Cập nhật bài đăng thành công", {
@@ -354,7 +409,7 @@ function FromCreateJob({ jobEdit }) {
               progress: undefined,
               theme: "light",
             });
-            navigate(`/personal`);
+            // navigate(`/personal`);
             dispatch(counterSlice.actions.increase());
           })
           .catch((error) => {
@@ -390,7 +445,10 @@ function FromCreateJob({ jobEdit }) {
               <div className="row">
                 <div className="col-xxl">
                   <div className="card mb-4">
-                    <div className="card-body">
+                    <div
+                      className="card-body"
+                      style={{ maxWidth: "880px", margin: "auto" }}
+                    >
                       <div className="reservation-form">
                         <div className="container">
                           <div className="row">
@@ -430,6 +488,28 @@ function FromCreateJob({ jobEdit }) {
                                       />
                                     </fieldset>
                                   </div>
+
+                                  <div className="col-lg-6">
+                                    <fieldset>
+                                      <label
+                                        htmlFor="Number"
+                                        className="form-label"
+                                      >
+                                        CompanyName
+                                      </label>
+                                      <input
+                                        required
+                                        type="text"
+                                        className="form-control"
+                                        id="companyName"
+                                        name="companyName"
+                                        placeholder={jobEdit?.companyName}
+                                        value={formData?.companyName}
+                                        onChange={handleChange}
+                                      />
+                                    </fieldset>
+                                  </div>
+
                                   <div className="col-lg-6">
                                     <fieldset>
                                       <label
@@ -502,7 +582,7 @@ function FromCreateJob({ jobEdit }) {
                                       </select>
                                     </fieldset>
                                   </div> */}
-                                  <div className="col-lg-6">
+                                  {/* <div className="col-lg-6">
                                     <fieldset>
                                       <label
                                         htmlFor="Number"
@@ -517,7 +597,7 @@ function FromCreateJob({ jobEdit }) {
                                         required
                                       />
                                     </fieldset>
-                                  </div>
+                                  </div> */}
 
                                   <div className="col-lg-12">
                                     <fieldset>
@@ -660,7 +740,7 @@ function FromCreateJob({ jobEdit }) {
                                 </Col>
 
                                 <Col xs={3} className="cate-item">
-                                  Industry ({selectedIndustry?.length} / 3)
+                                  Industries ({selectedIndustries?.length} / 3)
                                   <div className="cate-item-h">
                                     {jobCategories.industries.map(
                                       (type, index) => (
@@ -669,16 +749,16 @@ function FromCreateJob({ jobEdit }) {
                                             required
                                             className="form-check-input"
                                             type="checkbox"
-                                            id={`industry-${index}`}
+                                            id={`industries-${index}`}
                                             value={type}
-                                            checked={selectedIndustry.includes(
+                                            checked={selectedIndustries.includes(
                                               type
                                             )}
-                                            onChange={handleIndustryChange}
+                                            onChange={handleIndustriesChange}
                                           />
                                           <label
                                             className="form-check-label"
-                                            htmlFor={`industry-${index}`}
+                                            htmlFor={`industries-${index}`}
                                           >
                                             {type}
                                           </label>
@@ -741,239 +821,6 @@ function FromCreateJob({ jobEdit }) {
                         </div>
                       </div>
                       {/* ---------------------------------------------------- */}
-                      {/* <div>
-                        <div className="row mb-3">
-                          <label
-                            className="col-sm-2 col-form-label"
-                            htmlFor="title"
-                          >
-                            Tiêu đề
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              required
-                              type="text"
-                              className="form-control"
-                              id="title"
-                              name="title"
-                              placeholder={jobEdit?.title}
-                              value={formData?.title}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="row mb-3">
-                          <label
-                            className="col-sm-2 col-form-label"
-                            htmlFor="description"
-                          >
-                            Mô tả công việc
-                          </label>
-                          <div className="col-sm-10">
-                            <textarea
-                              className="form-control"
-                              id="description"
-                              name="description"
-                              placeholder={jobEdit?.description}
-                              value={formData?.description}
-                              onChange={handleChange}
-                            ></textarea>
-                          </div>
-                        </div>
-                        <div className="row mb-3">
-                          <label
-                            className="col-sm-2 col-form-label"
-                            htmlFor="address"
-                          >
-                            Địa chỉ cụ thể
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              required
-                              type="text"
-                              className="form-control"
-                              id="address"
-                              name="address"
-                              placeholder={jobEdit?.address}
-                              value={formData?.address}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="row mb-3">
-                          <label
-                            className="col-sm-2 col-form-label"
-                            htmlFor="salary"
-                          >
-                            Mức lương
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              required
-                              type="number"
-                              className="form-control"
-                              id="salary"
-                              name="salary"
-                              placeholder={jobEdit?.salary}
-                              value={formData?.salary}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="row mb-3">
-                          <label
-                            className="col-sm-2 col-form-label"
-                            htmlFor="image"
-                          >
-                            Hình ảnh
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              required
-                              type="file"
-                              className="form-control"
-                              id="image"
-                              name="image"
-                              onChange={handleimageChange}
-                              multiple // Cho phép chọn nhiều file
-                            />
-                          </div>
-                        </div>
-
-                        <div className="img-preview-wrap">
-                          {preview &&
-                            preview?.map((image, index) => (
-                              <img
-                                key={index}
-                                src={image}
-                                alt={`image Preview`}
-                                className="img-preview"
-                              />
-                            ))}
-                        </div>
-
-                        <Row className="select-cate">
-                          <Col xs={3} className="cate-item">
-                            Danh mục ({selectedWorkType?.length} / 2)
-                            <div className="cate-item-h">
-                              {jobCategories.workTypes.map((type, index) => (
-                                <div className="form-check" key={index}>
-                                  <input
-                                    required
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id={`workType-${index}`}
-                                    value={type}
-                                    checked={selectedWorkType.includes(type)}
-                                    onChange={handleWorkTypeChange}
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor={`workType-${index}`}
-                                  >
-                                    {type}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </Col>
-
-                          <Col xs={3} className="cate-item">
-                            Khu vực ({selectedLocation?.length} / 2)
-                            <div className="cate-item-h">
-                              {jobCategories.locations.map((type, index) => (
-                                <div className="form-check" key={index}>
-                                  <input
-                                    required
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id={`location-${index}`}
-                                    value={type}
-                                    checked={selectedLocation.includes(type)}
-                                    onChange={handleLocationChange}
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor={`location-${index}`}
-                                  >
-                                    {type}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </Col>
-
-                          <Col xs={3} className="cate-item">
-                            Ngành nghề ({selectedIndustry?.length} / 3)
-                            <div className="cate-item-h">
-                              {jobCategories.industries.map((type, index) => (
-                                <div className="form-check" key={index}>
-                                  <input
-                                    required
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id={`industry-${index}`}
-                                    value={type}
-                                    checked={selectedIndustry.includes(type)}
-                                    onChange={handleIndustryChange}
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor={`industry-${index}`}
-                                  >
-                                    {type}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </Col>
-                          <Col xs={3} className="cate-item">
-                            Vị trí ({selectedPosition?.length} / 3 )
-                            <div className="cate-item-h">
-                              {jobCategories.positions.map((type, index) => (
-                                <div className="form-check" key={index}>
-                                  <input
-                                    required
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id={`position-${index}`}
-                                    value={type}
-                                    checked={selectedPosition.includes(type)}
-                                    onChange={handlePositionChange}
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor={`position-${index}`}
-                                  >
-                                    {type}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </Col>
-                        </Row>
-
-                        <div className="row justify-content-end">
-                          <div className="col-sm-10">
-                            {jobEdit ? (
-                              <button
-                                className="btn btn-post"
-                                onClick={() => handleAddJob()}
-                              >
-                                Update post
-                              </button>
-                            ) : (
-                              <button
-                                className="btn btn-post"
-                                onClick={() => handleAddJob()}
-                              >
-                                Post
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 </div>

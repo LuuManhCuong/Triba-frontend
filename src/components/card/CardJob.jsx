@@ -8,6 +8,7 @@ import FromCreateJob from "../forms/FormCreateJob";
 import axios from "axios";
 import { counterSlice } from "../../redux-tookit/reducer/counterSlice";
 import { accountSelector, counterSelector } from "../../redux-tookit/selector";
+import ImageGrid from "../post/ImageGrid";
 
 function CardJob({ jobs, owner }) {
   const dispatch = useDispatch();
@@ -67,6 +68,8 @@ function CountryItem({
   const [item, setItem] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showCvModal, setShowCvModal] = useState(false);
+
   const [dataApply, setDataApply] = useState();
   const account = useSelector(accountSelector);
 
@@ -89,7 +92,16 @@ function CountryItem({
       setDataApply(response.data);
       // dispatch(counterSlice.actions.increase());
     } catch (error) {
-      toast.error("Failed to get");
+      toast.error("Failed to get", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
     setShowApplyModal(!showApplyModal);
   }
@@ -104,7 +116,16 @@ function CountryItem({
       setDataApply(response.data);
       // dispatch(counterSlice.actions.increase());
     } catch (error) {
-      toast.error("Failed to get");
+      toast.error("Failed to get", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -113,11 +134,29 @@ function CountryItem({
       await axios.delete(
         `http://localhost:8080/api/v1/user/job/delete/${job.jobId}`
       );
-      toast.success("Job deleted successfully!");
-      // console.log("xóa thành công");
+      toast.success("Job deleted successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.log("xóa thành công");
       dispatch(counterSlice.actions.increase());
     } catch (error) {
-      toast.error("Failed to delete the job.");
+      toast.error("Failed to delete the job.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -137,26 +176,125 @@ function CountryItem({
   function handleViewCV(user) {
     // Thực hiện các thao tác khi người dùng muốn xem CV
     // Ví dụ: Mở một modal hiển thị CV của người dùng
+    setShowCvModal(!showCvModal);
   }
 
-  async function handleUpdateStatus(id, status) {
+  async function handleUpdateStatus(id, status, cadidate, imgJob) {
     // console.log("update status: ", id, status);
     try {
       const response = await axios.patch(
         `http://localhost:8080/api/v1/user/job/applications/${id}/update-status/${status}`
       );
       // dispatch(counterSlice.actions.increase());
-      // console.log("data: ", response.data);
+      console.log("data: ", response.data);
+      if (status === "APPROVED") {
+        console.log("imgJob: ", imgJob);
+        sendEmail(
+          cadidate.email,
+          "CHÚC MỪNG BẠN ĐÃ VƯỌT QUA VÒNG CV",
+          `Ứng viên  ${cadidate.lastName} ${cadidate.firstName} đã ứng tuyển vào công việc: ${job?.title}.`,
+          imgJob
+        );
+      } else {
+        sendEmail(
+          cadidate.email,
+          "THÔNG BÁO ỨNG VIÊN CHƯA PHÙ HỢP",
+          `Ứng viên  ${cadidate.lastName} ${cadidate.firstName} đã ứng tuyển vào công việc: ${job?.title}.`,
+          imgJob
+        );
+        console.log("tu chối: ", cadidate.email);
+      }
       handleReloadApplyManage();
 
       // toast.success("Colabrate success!!!");
     } catch (error) {
-      toast.error("Failed to update status.");
+      toast.error("Failed to update status.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
+  const sendEmail = async (email, subject, text, img) => {
+    // console.log("sen img: ", img);
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      console.error("Token is not available.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/send-email",
+        {
+          to: email,
+          subject: subject,
+          text: text,
+          html: `
+          <div>
+            <h1>${subject}</h1>
+            <p>${text}</p>
+            <img src="${img}" alt="Image" style="max-width: 100%; height: auto;" />
+          </div>
+        `,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Email sent successfully");
+        toast.success("Email sent successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        console.error("Failed to send email: ", response);
+        toast.error("Failed to send email", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred while sending email:", error);
+      toast.error("Error occurred while sending email", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   return (
     <div className="col-lg-12">
+      <ToastContainer />
       {/* Modal Edit */}
       <Modal
         className="moda"
@@ -169,10 +307,10 @@ function CountryItem({
           className="header-moda"
           id="example-custom-modal-styling-title"
         >
+          Edit post
           <button onClick={() => setShowEditModal(false)}>
             <MdClear></MdClear>
           </button>
-          Edit post
         </Modal.Title>
         <Modal.Body>
           <FromCreateJob jobEdit={job}></FromCreateJob>
@@ -199,75 +337,98 @@ function CountryItem({
         <Modal.Body>
           {!dataApply?.lengh > 0 ? (
             <table className="table">
+              {/* moda Cv */}
               <thead>
                 <tr>
                   <th>#</th>
                   <th>User</th>
-                  <th>Apply Time</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>CV</th>
                   <th>Status</th>
+                  <th>Apply Time</th>
+
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {dataApply &&
-                  dataApply.map((apply, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>
-                        <img
-                          style={{ width: "40px", height: "40px" }}
-                          src={
-                            apply?.user?.avatar ||
-                            "https://res.cloudinary.com/djcamu6kz/image/upload/v1716456163/buio7bmyejvpe4zxnxbo.png"
-                          }
-                          alt="avt"
-                        />
-                        {apply?.user?.firstName} {apply?.user?.lastName}
-                      </td>
-                      <td>{formatDateTime(apply?.applicationTime)}</td>
-                      <td
-                        style={{
-                          color: apply.status === "APPROVED" ? "green" : "red",
-                        }}
-                      >
-                        {apply.status}
-                      </td>
-                      <td>
-                        <button
-                          style={{ magin: "0 10px" }}
-                          className="btn btn-primary btn-sm"
-                          onClick={() => handleViewCV(apply.user)}
-                        >
-                          Xem CV
-                        </button>
-                        <>
-                          {apply.status !== "REJECTED" && (
-                            <button
-                              style={{ magin: "0 10px" }}
-                              className="btn btn-danger btn-sm"
-                              onClick={() =>
-                                handleUpdateStatus(apply.id, "REJECTED")
-                              }
-                            >
-                              REJECTED
-                            </button>
-                          )}
+                {dataApply
+                  ? dataApply.map((apply, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>
+                          <img
+                            style={{ width: "40px", height: "40px" }}
+                            src={
+                              apply?.user?.avatar ||
+                              "https://res.cloudinary.com/djcamu6kz/image/upload/v1716456163/buio7bmyejvpe4zxnxbo.png"
+                            }
+                            alt="avt"
+                          />
+                          {apply?.user?.firstName} {apply?.user?.lastName}
+                        </td>
+                        <td>{apply.user.email}</td>
+                        <td>{apply.user.phoneNumber}</td>
 
-                          {apply.status !== "APPROVED" && (
-                            <button
-                              style={{ magin: "0 10px" }}
-                              className="btn btn-success btn-sm"
-                              onClick={() =>
-                                handleUpdateStatus(apply.id, "APPROVED")
-                              }
-                            >
-                              APPROVED
-                            </button>
-                          )}
-                        </>
-                      </td>{" "}
-                    </tr>
-                  ))}
+                        <td>
+                          <div style={{ width: "50px" }} className="cv-prev">
+                            <ImageGrid
+                              imgs={[apply?.user?.coverImg]}
+                            ></ImageGrid>
+                          </div>
+                        </td>
+                        <td
+                          style={{
+                            color:
+                              apply.status === "APPROVED" ? "green" : "red",
+                          }}
+                        >
+                          {apply.status}
+                        </td>
+                        <td>
+                          <p>{formatDateTime(apply?.applicationTime)}</p>
+                        </td>
+
+                        <td>
+                          <>
+                            {apply.status !== "REJECTED" && (
+                              <button
+                                style={{ magin: "0 10px !important" }}
+                                className="btn btn-danger btn-sm"
+                                onClick={() =>
+                                  handleUpdateStatus(
+                                    apply.id,
+                                    "REJECTED",
+                                    apply?.user,
+                                    apply?.job.images[0].url
+                                  )
+                                }
+                              >
+                                REJECTED
+                              </button>
+                            )}
+
+                            {apply.status !== "APPROVED" && (
+                              <button
+                                style={{ magin: "0 10px !important" }}
+                                className="btn btn-success btn-sm"
+                                onClick={() =>
+                                  handleUpdateStatus(
+                                    apply.id,
+                                    "APPROVED",
+                                    apply?.user,
+                                    apply?.job.images[0].url
+                                  )
+                                }
+                              >
+                                APPROVED
+                              </button>
+                            )}
+                          </>
+                        </td>
+                      </tr>
+                    ))
+                  : ""}
               </tbody>
             </table>
           ) : (
@@ -276,7 +437,6 @@ function CountryItem({
         </Modal.Body>
       </Modal>
 
-      <ToastContainer />
       <div className="item shadow-md">
         <div className="row">
           <div className="col-lg-4 col-sm-5">

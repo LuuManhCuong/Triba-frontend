@@ -13,7 +13,7 @@ function AmazingDeals() {
                 <div className="col-lg-6">
                   <div className="image">
                     <img
-                      src="http://127.0.0.1:5500/assets/images/deals-04.jpg"
+                      src="https://res.cloudinary.com/djcamu6kz/image/upload/v1716520227/xbyj62srmwbj6u9et3u5.webp"
                       alt=""
                     />
                   </div>
@@ -53,7 +53,7 @@ function AmazingDeals() {
                 <div className="col-lg-6">
                   <div className="image">
                     <img
-                      src="http://127.0.0.1:5500/assets/images/deals-04.jpg"
+                      src="https://res.cloudinary.com/djcamu6kz/image/upload/v1716520529/k46rtvlu3yl7nyhojvza.webp"
                       alt=""
                     />
                   </div>

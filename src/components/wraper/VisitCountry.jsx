@@ -192,9 +192,28 @@ function VisitCountry({ job }) {
                           </div>
                           <p>{job?.description}</p>
                           <ul className="info">
-                            <li>
-                              <i className="fa fa-user"></i> {job?.createAt}
+                            <li
+                              style={{
+                                textAlign: "center",
+                              }}
+                            >
+                              <img
+                                src={job?.user?.avatar}
+                                alt="avt"
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  borderRadius: "50px",
+                                  margin: "auto",
+                                }}
+                              />
+
+                              {job?.user?.lastName + " " + job?.user?.firstName}
+                              {/* <i className="fa fa-user"></i> {job?.createAt} */}
                             </li>
+                            {/* <li>
+                              <i className="fa fa-globe"></i> {job?.createAt}
+                            </li> */}
                             <li>
                               <i className="fa fa-globe"></i>{" "}
                               {job?.locations[0]?.name}
@@ -257,14 +276,9 @@ function VisitCountry({ job }) {
                               <div className="detail footer-action">
                                 {/* <h3 className="count">133</h3> */}
                                 <div
-                                  onClick={() => {
-                                    dispatch(
-                                      showComponentSlice.actions.setComponent({
-                                        jobId: job.jobId,
-                                        component: "detail",
-                                      })
-                                    );
-                                  }}
+                                  onClick={() =>
+                                    naviagte(`/job/detail/${job.jobId}`)
+                                  }
                                 >
                                   <BiDetail></BiDetail>
                                   Detail

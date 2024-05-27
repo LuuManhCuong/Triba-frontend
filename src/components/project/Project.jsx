@@ -7,6 +7,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { counterSelector } from "../../redux-tookit/selector";
+import EditProfile from "./EditProfile";
+import ImageGrid from "../post/ImageGrid";
 
 const Avatar = ({ src, alt }) => (
   <img src={src} className="img-fluid avatar-xxl rounded-circle" alt={alt} />
@@ -51,6 +53,10 @@ const ProjectCard = ({ project, index }) => (
                   data-bs-original-title={assignee.name}
                 >
                   <img
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                    }}
                     src={assignee.avatar}
                     alt=""
                     className="rounded-circle avatar-sm"
@@ -90,6 +96,33 @@ const Project = () => {
   const [activeCpn, setActiveCpn] = useState(1);
   const [dataApply, setDataApply] = useState([]);
   const [pro, setPro] = useState([]);
+  const [user, setUser] = useState(null);
+  const userId = localStorage.getItem("userId");
+  const reload = useSelector(counterSelector);
+  useEffect(() => {
+    // Gọi API để lấy thông tin người dùng khi component được tạo
+    axios
+      .get(`http://localhost:8080/api/v1/user/${userId}`)
+      .then((response) => {
+        setUser(response.data); // Lưu thông tin người dùng vào state
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId, reload]); // Sử dụng userId làm dependency để gọi API lại khi userId thay đổi
+
+  // console.log("user if ", user);
+  useEffect(() => {
+    // Gọi API để lấy thông tin người dùng khi component được tạo
+    axios
+      .get(`http://localhost:8080/api/v1/user/${userId}`)
+      .then((response) => {
+        setUser(response.data); // Lưu thông tin người dùng vào state
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId]); // Sử dụng userId làm dependency để gọi API lại khi userId thay đổi
 
   useEffect(() => {
     setPro([]);
@@ -180,36 +213,45 @@ const Project = () => {
                 <div className="col-md-3">
                   <div className="text-center border-end">
                     <Avatar
-                      src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      src={
+                        user?.avatar ||
+                        "https://bootdey.com/img/Content/avatar/avatar1.png"
+                      }
                       alt="Jansh Wells"
                     />
-                    <h4 className="text-primary font-size-20 mt-3 mb-2">
-                      Mạnh Cường
+                    <h4
+                      className=" font-size-25 mt-3 mb-2"
+                      style={{ color: "var(--primary-color)" }}
+                    >
+                      {user?.lastName + " " + user?.firstName}
                     </h4>
                     <h5 className="text-muted font-size-13 mb-0">
-                      Web Designer
+                      {user?.education}
                     </h5>
                   </div>
                 </div>
                 <div className="col-md-9">
                   <div className="ms-3">
                     <div>
-                      <h4 className="card-title mb-2">Biography</h4>
-                      <p className="mb-0 text-muted">
-                        Hi I'm Jansh, has been the industry's standard dummy
-                        text To an English person alteration text.
-                      </p>
+                      <h4
+                        className="card-title mb-2 font-size-50"
+                        style={{ color: "var(--primary-color)" }}
+                      >
+                        {" "}
+                        {user?.lastName + " " + user?.firstName}
+                      </h4>
+                      <p className="mb-0 text-muted">{user?.slogan}</p>
                     </div>
                     <div className="row my-4">
                       <div className="col-md-12">
                         <div>
                           <p className="text-muted mb-2 fw-medium">
                             <i className="mdi mdi-email-outline me-2"></i>
-                            Janshwells@probic.com
+                            {user?.email}
                           </p>
                           <p className="text-muted fw-medium mb-0">
                             <i className="mdi mdi-phone-in-talk-outline me-2"></i>
-                            418-955-4703
+                            {user?.phonNumber}
                           </p>
                         </div>
                       </div>
@@ -238,7 +280,17 @@ const Project = () => {
                             <span className="d-block d-sm-none">
                               <i className="fas fa-home"></i>
                             </span>
-                            <span className="d-none d-sm-block">{e.title}</span>
+                            <span
+                              style={{
+                                userSelect: "none",
+                                fontSize: "1.6rem",
+                                color: "var(--primary-color)",
+                                fontWeight: "500",
+                              }}
+                              className="d-none d-sm-block"
+                            >
+                              {e.title}
+                            </span>
                           </div>
                         </li>
                       ))}
@@ -284,88 +336,23 @@ const Project = () => {
             </div>
           )}
 
-          {/* {activeCpn === 2 && <div>Chỉnh sửa hồ sơ</div>} */}
           {activeCpn === 3 && <FormCreateJob></FormCreateJob>}
+          {activeCpn === 4 && <EditProfile user={user}></EditProfile>}
         </div>
 
         <div className="col-xl-4">
           <div className="card">
             <div className="card-body">
-              <div className="pb-2">
-                <h4 className="card-title mb-3">About</h4>
-                <p>
-                  Hi I'm Jansh, has been the industry's standard dummy text To
-                  an English person, it will seem like simplified.
-                </p>
-                <ul className="ps-3 mb-0">
-                  <li>It will seem like simplified.</li>
-                  <li>
-                    To achieve this, it would be necessary to have uniform
-                    pronunciation
-                  </li>
-                </ul>
-              </div>
-              <hr />
               <div className="pt-2">
-                <h4 className="card-title mb-4">My Skill</h4>
-                <div
-                  className="d-flex gap-2 flex-wrap"
-                  style={{ color: "red" }}
-                >
-                  <span className="badge badge-soft-primary">Photoshop</span>
-                  <span className="badge badge-soft-primary">illustrator</span>
-                  <span className="badge badge-soft-primary">HTML</span>
-                  <span className="badge badge-soft-primary">CSS</span>
-                  <span className="badge badge-soft-primary">Javascript</span>
-                  <span className="badge badge-soft-primary">Php</span>
-                  <span className="badge badge-soft-primary">Python</span>
-                </div>
-              </div>
-              <hr />
-              <div className="pt-2">
-                <h4 className="card-title mb-4">Gallery</h4>
+                <h4 className="card-title mb-4">My CV</h4>
                 <div className="row">
-                  <div className="col-4">
-                    <img
-                      src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                  <div className="col-8">
+                    {/* <img
+                      src={user?.coverImg}
                       className="img-fluid rounded"
                       alt=""
-                    />
-                  </div>
-                  <div className="col-4">
-                    <img
-                      src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                      className="img-fluid rounded"
-                      alt=""
-                    />
-                  </div>
-                  <div className="col-4">
-                    <img
-                      src="https://bootdey.com/img/Content/avatar/avatar8.png"
-                      className="img-fluid rounded"
-                      alt=""
-                    />
-                  </div>
-                  <div className="col-4">
-                    <img
-                      src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                      className="img-fluid rounded mt-4"
-                      alt=""
-                    />
-                  </div>
-                  <div className="col-4">
-                    <img
-                      src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                      className="img-fluid rounded mt-4"
-                      alt=""
-                    />
-                  </div>
-                  <div className="col-4">
-                    <img
-                      src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                      className="img-fluid rounded mt-4"
-                      alt=""
-                    />
+                    /> */}
+                    <ImageGrid imgs={[user?.coverImg]}></ImageGrid>
                   </div>
                 </div>
               </div>
@@ -378,7 +365,7 @@ const Project = () => {
                   </div>
                   <div className="flex-grow-1">
                     <p className="mb-2">Location</p>
-                    <h5 className="mb-1 font-size-15">California, USA</h5>
+                    <h5 className="mb-1 font-size-15">{user?.address}</h5>
                   </div>
                 </div>
                 <div className="d-flex mb-3">
@@ -387,7 +374,7 @@ const Project = () => {
                   </div>
                   <div className="flex-grow-1">
                     <p className="mb-2">Email</p>
-                    <h5 className="mb-1 font-size-15">Janshwell@probic.com</h5>
+                    <h5 className="mb-1 font-size-15">{user?.email}</h5>
                   </div>
                 </div>
                 <div className="d-flex mb-3">
@@ -396,7 +383,7 @@ const Project = () => {
                   </div>
                   <div className="flex-grow-1">
                     <p className="mb-2">Phone</p>
-                    <h5 className="mb-1 font-size-15">418-955-4703</h5>
+                    <h5 className="mb-1 font-size-15">{user?.Phone}</h5>
                   </div>
                 </div>
                 <div className="d-flex mb-3">

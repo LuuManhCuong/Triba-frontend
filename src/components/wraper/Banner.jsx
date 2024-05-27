@@ -38,7 +38,7 @@ function Banner() {
                   Explore thousands of job opportunities from leading companies
                   in the market
                 </h2>
-                <h1>Wonderful job</h1>
+                <h1>TRIBA-CARREER JOURNEY</h1>
                 <div className="border-button">
                   <a href="/">Go There</a>
                 </div>
@@ -53,7 +53,7 @@ function Banner() {
                           <h4>
                             <span>Community:</span>
                             <br />
-                            1.48 M
+                            10+
                           </h4>
                         </div>
                         <div className="col-lg-3 col-sm-6 col-6">
@@ -69,12 +69,12 @@ function Banner() {
                           <h4>
                             <span>Collaboration:</span>
                             <br />
-                            946.000
+                            100+
                           </h4>
                         </div>
                         <div className="col-lg-3 col-sm-6 col-6">
                           <div className="main-button">
-                            <a href="about.html">Explore More</a>
+                            <a href="/">Explore More</a>
                           </div>
                         </div>
                       </div>

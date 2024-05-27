@@ -7,21 +7,22 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { filterSlice } from "../../redux-tookit/reducer/filterSclice";
+import { BiSolidLeftDownArrowCircle } from "react-icons/bi";
 
 const jobCategories = {
   industries: [
-    "Công nghệ thông tin (IT)",
-    "Kế toán / Kiểm toán",
+    "Công nghệ thông tin",
+    "Kế toán",
     "Nhân sự",
-    "Marketing / Quảng cáo",
-    "Kinh doanh / Bán hàng",
-    "Giáo dục / Đào tạo",
-    "Y tế / Dược phẩm",
-    "Sản xuất / Vận hành sản xuất",
-    "Logistics / Chuỗi cung ứng",
+    "Marketing ",
+    "Kinh doanh",
+    "Giáo dục",
+    "Y tế",
+    "Sản xuất",
+    "Logistics",
     "Xây dựng",
-    "Khách sạn / Nhà hàng",
-    "Ngân hàng / Tài chính",
+    "Khách sạn",
+    "Ngân hàng ",
   ],
   positions: [
     "Thực tập sinh",
@@ -65,6 +66,7 @@ function Category() {
         selectedWorkType,
       })
     );
+    // console.log("ind: ", selectedIndustry);
   };
 
   useEffect(() => {
@@ -76,7 +78,8 @@ function Category() {
         selectedWorkType,
       })
     );
-  }, [selectedWorkType]);
+    // console.log("ind: ", selectedIndustry);
+  }, [selectedIndustry, selectedLocation, selectedPosition, selectedWorkType]);
 
   return (
     <div className="categories">
@@ -102,17 +105,25 @@ function Category() {
         <form onSubmit={handleSubmit}>
           <div className="sort">
             <Button
-              type="submit"
+              onClick={() => {
+                setSelectedWorkType("");
+                setSelectedIndustry("");
+                setSelectedLocation("");
+                setSelectedPosition("");
+              }}
               variant="contained"
-              style={{ background: "rgb(34 179 193)", margin: "0 5px" }}
+              style={{
+                background: "rgb(34 179 193)",
+                color: "white",
+                margin: "0 5px",
+              }}
             >
-              <a style={{ color: "white" }} href="/">
-                Refresh
-              </a>
+              Refresh
             </Button>
-            <Box className="sort-btn" sx={{ minWidth: 120 }}>
+            <Box className=" single_field sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <NativeSelect
+                  className="wide"
                   value={selectedWorkType}
                   onChange={(e) => setSelectedWorkType(e.target.value)}
                   inputProps={{
@@ -131,9 +142,10 @@ function Category() {
                 </NativeSelect>
               </FormControl>
             </Box>
-            <Box className="sort-btn" sx={{ minWidth: 120 }}>
+            <Box className=" single_field sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <NativeSelect
+                  className="wide"
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
                   inputProps={{
@@ -152,10 +164,11 @@ function Category() {
                 </NativeSelect>
               </FormControl>
             </Box>
-            <Box className="sort-btn" sx={{ minWidth: 120 }}>
+            <Box className=" single_field sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <NativeSelect
-                  value={selectedIndustry}
+                  className="wide"
+                  value={selectedLocation}
                   onChange={(e) => setSelectedIndustry(e.target.value)}
                   inputProps={{
                     name: "industry",
@@ -163,19 +176,20 @@ function Category() {
                   }}
                 >
                   <option value="" disabled>
-                    Chọn ngành/nghề
+                    Chọn Lĩnh Vực
                   </option>
-                  {jobCategories.industries.map((industry, index) => (
-                    <option key={index} value={industry}>
-                      {industry}
+                  {jobCategories.industries.map((indusry, index) => (
+                    <option key={index} value={indusry}>
+                      {indusry}
                     </option>
                   ))}
                 </NativeSelect>
               </FormControl>
             </Box>
-            <Box className="sort-btn" sx={{ minWidth: 120 }}>
+            <Box className=" single_field sort-btn" sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <NativeSelect
+                  className="wide"
                   value={selectedPosition}
                   onChange={(e) => setSelectedPosition(e.target.value)}
                   inputProps={{

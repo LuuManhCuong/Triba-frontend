@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./auth.scss";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -18,6 +18,14 @@ function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   console.log("account: ", account);
+  const token = localStorage.getItem("access_token");
+
+  useEffect(() => {
+    if (token != null) {
+      navigate("/index");
+    }
+  }, [token]);
+
   const {
     register,
     formState: { errors },
@@ -77,12 +85,13 @@ function Login() {
       axios
         .post("http://localhost:8080/api/v1/auth/sigin", account)
         .then(function (response) {
-          console.log("Response:", response.data?.message);
+          console.log("Response:", response.data);
           setWrongAc(response.data?.message);
           localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("refresh_token", response.data.refresh_token);
           localStorage.setItem("userId", response.data.user.id);
           localStorage.setItem("email", response.data.user.email);
+          localStorage.setItem("role", response.data.user?.role);
 
           dispatch(accountSlice.actions.login(response.data));
         })

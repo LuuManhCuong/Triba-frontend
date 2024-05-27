@@ -15,6 +15,7 @@ import ReservationPage from "../wraper/ReservationPage";
 import JobByLocationChart from "./JobByLocationChart";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
+import { useNavigate } from "react-router-dom";
 
 // Đăng ký các thành phần biểu đồ với Chart.js
 ChartJS.register(
@@ -32,6 +33,15 @@ const AdminDashboard = () => {
     totalUsers: 0,
     totalApplications: 0,
   });
+
+  const navigate = useNavigate();
+  const checkAdmin = localStorage.getItem("role");
+
+  useEffect(() => {
+    if (checkAdmin !== "ADMIN") {
+      navigate("/index");
+    }
+  }, [checkAdmin]);
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -64,7 +74,7 @@ const AdminDashboard = () => {
       {
         label: "Total Counts",
         data: [stats.totalJobs, stats.totalUsers, stats.totalApplications],
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        backgroundColor: "#22b3c1",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
@@ -92,7 +102,6 @@ const AdminDashboard = () => {
         totalUsers={stats.totalUsers}
         totalJobs={stats.totalJobs}
       ></ReservationPage>
-
       <Row>
         <Col xs={6}>
           <Bar data={data} options={options} />

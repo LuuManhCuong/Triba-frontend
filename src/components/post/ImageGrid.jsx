@@ -9,6 +9,7 @@ import { MdClear } from "react-icons/md";
 import ImageSlick from "./ImageSlick";
 
 function ImageGrid({ imgs }) {
+  // console.log("imgsss: ", imgs);
   const { value } = useSelector(countImgSliceSelector);
   const [activeImg, setActiveImg] = useState(0);
   const [showImgs, setShowImgs] = useState(imgs);
@@ -27,13 +28,13 @@ function ImageGrid({ imgs }) {
           className="header-moda"
           id="example-custom-modal-styling-title"
         >
-          Ảnh {value + 1} / {imgs.length}
+          Ảnh {value + 1} / {imgs?.length}
           <button onClick={() => setShow(false)}>
             <MdClear></MdClear>
           </button>
         </Modal.Title>
         <Modal.Body>
-          {showImgs.length > 1 ? (
+          {showImgs?.length > 1 ? (
             <ImageSlick imgs={showImgs} activeImg={activeImg}></ImageSlick>
           ) : (
             <div className="img-inner">
@@ -45,13 +46,18 @@ function ImageGrid({ imgs }) {
       <div>
         {imgs?.length === 1 && (
           <img
+            style={{ width: "70%", margin: "auto" }}
             onClick={() => {
               setShow(true);
               setShowImgs(imgs);
               setActiveImg(0);
             }}
             className="post-body-img img-1"
-            src={imgs[0].url}
+            src={
+              imgs[0]?.url ||
+              imgs[0] ||
+              "https://res.cloudinary.com/djcamu6kz/image/upload/v1716727509/byq36gfaokzcytmmcbgf.svg"
+            }
             alt="img"
           />
         )}
@@ -124,7 +130,7 @@ function ImageGrid({ imgs }) {
                     src={imgs[2].url}
                     alt="img"
                   />
-                  {imgs.length > 3 && (
+                  {imgs?.length > 3 && (
                     <div className="more">Xem thêm +{imgs?.length - 3}</div>
                   )}
                 </Col>

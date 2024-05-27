@@ -46,7 +46,7 @@ function Post() {
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
-  const [totalPage, setTotalPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
   const [size, setSize] = useState(4);
   let userId = localStorage.getItem("userId");
   const [liked, setLiked] = useState(); // Trạng thái like
@@ -94,14 +94,15 @@ function Post() {
 
   const fetchJobs = useCallback(() => {
     setIsLoading(true);
-
-    const url = `http://localhost:8080/api/v1/user/job/filter?
-    industryName=${filter.selectedIndustry}
+    console.log("chekc: ", filter.selectedIndustry);
+    const url = `http://localhost:8080/api/v1/user/job/filter?industryName=${filter.selectedIndustry}
     &positionName=${filter.selectedPosition}
     &locationName=${filter.selectedLocation}
     &workTypeName=${filter.selectedWorkType}
     &page=${page}
     &size=${size}`;
+
+    console.log(url);
     axios
       .get(url)
       .then((response) => {
@@ -227,7 +228,7 @@ function Post() {
     axios
       .post(url, {}, config)
       .then((response) => {
-        console.log("đagn chạy");
+        // console.log("đagn chạy");
         sendEmail(
           userEmail,
           "Ứng tuyển công việc thành công",
@@ -273,7 +274,7 @@ function Post() {
     // Thực hiện yêu cầu POST đến backend
     // console.log("like: ", jobId);
     const token = localStorage.getItem("access_token");
-    
+
     if (!token) {
       toast.warning(`Vui lòng đăng nhập!`);
       console.error("Token is not available.");

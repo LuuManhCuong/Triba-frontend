@@ -726,6 +726,11 @@ Visit Country Style
 
 .visit-country .item .right-content p {
   margin: 18px 0px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-align: justify;
+  overflow: hidden;
 }
 
 .visit-country .item .right-content ul {
@@ -1041,4 +1046,95 @@ textarea.form-control {
   width: 100%;
   justify-content: center;
   align-items: center;
+}
+
+.job_listing_area,
+.catagory_area {
+  width: 80vw;
+  margin: auto;
+}
+
+.single_field .wide {
+  height: 30px;
+  border: 1px solid #e8e8e8;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.single_field.sr-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    margin: 0 10px;
+    height: 40px;
+  }
+}
+.project-container .rounded-circle {
+  border-radius: 50% !important;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: auto;
+  border: 1px solid var(--primary-color);
+}
+
+.job-broad .header-area .main-header-area .main-menu ul li a:hover {
+  color: #cbcfcf;
+}
+.job-broad .boxed-btn3 {
+  padding: 0 10px;
+}
+.job-broad .boxed-btn3:hover {
+  color: #ebf0f0 !important;
+  border: 1px solid #22b3c1;
+}
+
+.job-broad .job_details_area {
+  background: #f5f7fa;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  width: 70vw;
+  margin: auto;
+}
+.visit-country .item .image img {
+  border-radius: 23px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  padding: 10px;
+}
+.job-broad
+  .job_listing_area
+  .job_lists
+  .single_jobs
+  .jobs_left
+  .jobs_conetent
+  h4 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: 400;
+  transition: 0.3s;
+  width: 540px;
+}
+.job-broad
+  .job_listing_area
+  .job_lists
+  .single_jobs
+  .jobs_left
+  .jobs_conetent
+  .links_locat
+  .location {
+  margin-right: 10px;
+  width: 180px;
+  overflow: auto;
+}
+.job-broad .header-area .main-header-area {
+  background: #fff;
+  background: var(--primary-color);
+  padding: 0px 150px;
 }

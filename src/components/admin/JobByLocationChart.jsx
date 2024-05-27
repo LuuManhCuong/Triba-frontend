@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const JobByLocationChart = () => {
   const [value, setValue] = useState([]);
   const [labels, setLabels] = useState([]);
+  const navigate = useNavigate();
+  const checkAdmin = localStorage.getItem("role");
+
+  useEffect(() => {
+    if (checkAdmin !== "ADMIN") {
+      navigate("/index");
+    }
+  }, [checkAdmin]);
 
   useEffect(() => {
     fetchChartData();
@@ -51,7 +60,7 @@ const JobByLocationChart = () => {
       {
         label: "Jobs in: ",
         data: value || [0],
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        backgroundColor: "#22b3c1",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },

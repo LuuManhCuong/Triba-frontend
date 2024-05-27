@@ -17,6 +17,9 @@ import About from "./page/About";
 import Deals from "./page/Deals";
 import Reservation from "./page/Reservation";
 import CreateJob from "./components/wraper/CreateJob";
+import JobDetal from "./page/JobDetal";
+import AdminManageUser from "./components/admin/AdminManageUser";
+import AdminManageJob from "./components/admin/AdminManageJob";
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
       <Route path="/deals" element={<Deals />} />
       <Route path="/admin" element={<Reservation />} />
       <Route path="/new-post" element={<CreateJob />} />
+      <Route path="/job/detail/:id" element={<JobDetal />} />
+      <Route path="/admin/manage/user" element={<AdminManageUser />} />
+      <Route path="/admin/manage/job" element={<AdminManageJob />} />
 
       <Route path="/account" element={<Account />} />
       <Route path="/analysis" element={<Analysis />} />
