@@ -16,7 +16,7 @@ function Deals() {
       <div className="job-broad">
         <Header></Header>
         {/* <BannerDeals></BannerDeals> */}
-        <SliderArea></SliderArea>
+        {/* <SliderArea></SliderArea> */}
         {/* <CategoryArea></CategoryArea> */}
         <JobListingArea></JobListingArea>
       </div>

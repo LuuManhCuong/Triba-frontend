@@ -17,9 +17,11 @@ import {
 import axios from "axios";
 import JobListingCard from "./JobListingCard";
 import { counterSelector } from "../redux-tookit/selector";
+import { countImgSlice } from "../redux-tookit/reducer/countImgSlice";
+import { counterSlice } from "../redux-tookit/reducer/counterSlice";
 
 const jobCategories = {
-  industry: [
+  industries: [
     "Công nghệ thông tin",
     "Kế toán",
     "Nhân sự",
@@ -65,23 +67,16 @@ function JobListingArea({ isAdmin }) {
   const [selectedPosition, setSelectedPosition] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [jobs, setJobs] = useState([]);
-
+  const counter = useSelector(counterSelector);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [size, setSize] = useState(5);
-  const reload = useSelector(counterSelector);
-
-  // console.log("searchKeyword: ", searchKeyword);
-  // console.log("searchlocatino: ", selectedLocation);
-  // console.log("searchin đutry: ", selectedIndustry);
-  // console.log("searchKpositon: ", selectedPosition);
-  // console.log("searchKeywordtype: ", selectedWorkType);
 
   function handleChange(event: React.ChangeEvent<unknown>, value: number) {
     setPage(value > 1 ? value - 1 : value === 1 && 0);
     console.log("value: ", value);
-    //   window.scrollTo({ top: 500, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
   useEffect(() => {
     // setPage(0);
@@ -93,7 +88,7 @@ function JobListingArea({ isAdmin }) {
     &page=${page}
     &size=${size}`;
 
-    console.log(url);
+    // console.log(url);
     axios
       .get(url)
       .then((response) => {
@@ -105,6 +100,33 @@ function JobListingArea({ isAdmin }) {
         console.error("Error fetching jobs:", error);
         setIsLoading(true);
       });
+
+    if (
+      selectedIndustry ||
+      selectedLocation ||
+      selectedPosition ||
+      selectedWorkType
+    ) {
+      const formData = {
+        userId: localStorage.getItem("userId"), // Thay thế 'YourUserId' bằng giá trị thực tế
+        keySearch: searchKeyword, // Thêm các trường dữ liệu khác nếu cần
+        industries: selectedIndustry,
+        positions: selectedPosition,
+        locations: selectedLocation,
+        workTypes: selectedWorkType,
+      };
+      console.log("send search: ", formData);
+      axios
+        .post(`http://localhost:8080/api/v1/user/search/save`, formData)
+        .then((response) => {
+          console.log("res: ", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching jobs:", error);
+        });
+    } else {
+      console.log("ko có dữ liệu nên ko tạo search");
+    }
   }, [
     page,
     size,
@@ -112,9 +134,11 @@ function JobListingArea({ isAdmin }) {
     selectedPosition,
     selectedLocation,
     selectedWorkType,
-    reload,
+    counter,
   ]);
 
+  // console.log("coutnt: ", counter);
+  // console.log("reload: ", jobs);
   function handleSearch() {
     // Make an HTTP GET request to the backend API endpoint
     if (searchKeyword?.length > 0) {
@@ -126,21 +150,46 @@ function JobListingArea({ isAdmin }) {
           console.log(response.data);
           setJobs(response.data);
           setIsLoading(false);
+
+          const formData = {
+            userId: localStorage.getItem("userId"), // Thay thế 'YourUserId' bằng giá trị thực tế
+            keySearch: searchKeyword, // Thêm các trường dữ liệu khác nếu cần
+            industries: selectedIndustry,
+            positions: selectedPosition,
+            locations: selectedLocation,
+            workTypes: selectedWorkType,
+          };
+          // console.log("send search: ", formData);
+          axios
+            .post(`http://localhost:8080/api/v1/user/search/save`, formData)
+            .then((response) => {
+              // console.log("res: ", response.data);
+              // dispatch(counterSlice.actions.descrease());
+            })
+            .catch((error) => {
+              console.error("Error fetching jobs:", error);
+            });
         })
         .catch((error) => {
           console.error("Error fetching jobs:", error);
           setIsLoading(true);
         });
     }
+
+    setSelectedWorkType("");
+    setSelectedLocation("");
+    setSelectedIndustry("");
+    setSelectedPosition("");
   }
 
-  console.log(jobs);
+  // console.log(jobs);
 
   const handleSubmit = (event) => {};
 
   return (
     <div className="job_listing_area plus_padding">
       <div className="container">
+        {isAdmin ? <h2>ADMIN MANAGE JOB</h2> : ""}
         <div className="row">
           <div className="col-lg-3">
             <div className="job_filter white-bg">
@@ -227,7 +276,7 @@ function JobListingArea({ isAdmin }) {
                             <option value="" disabled>
                               Chọn ngành/nghề
                             </option>
-                            {jobCategories.industry.map((industry, index) => (
+                            {jobCategories.industries.map((industry, index) => (
                               <option key={index} value={industry}>
                                 {industry}
                               </option>

@@ -8,6 +8,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { filterSlice } from "../../redux-tookit/reducer/filterSclice";
 import { BiSolidLeftDownArrowCircle } from "react-icons/bi";
+import { counterSlice } from "../../redux-tookit/reducer/counterSlice";
 
 const jobCategories = {
   industries: [
@@ -48,13 +49,13 @@ const jobCategories = {
     "Làm việc từ xa (Remote)",
   ],
 };
-
 function Category() {
   const dispatch = useDispatch();
   const [selectedWorkType, setSelectedWorkType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,10 +67,10 @@ function Category() {
         selectedWorkType,
       })
     );
-    // console.log("ind: ", selectedIndustry);
   };
 
   useEffect(() => {
+    dispatch(counterSlice.actions.increase());
     dispatch(
       filterSlice.actions.filter({
         selectedIndustry,
@@ -78,8 +79,72 @@ function Category() {
         selectedWorkType,
       })
     );
-    // console.log("ind: ", selectedIndustry);
+
+    if (
+      selectedIndustry ||
+      selectedLocation ||
+      selectedPosition ||
+      selectedWorkType
+    ) {
+      const formData = {
+        userId: localStorage.getItem("userId"), // Thay thế 'YourUserId' bằng giá trị thực tế
+        keySearch: "", // Thêm các trường dữ liệu khác nếu cần
+        industries: selectedIndustry,
+        positions: selectedPosition,
+        locations: selectedLocation,
+        workTypes: selectedWorkType,
+      };
+      // console.log("send search: ", formData);
+      axios
+        .post(`http://localhost:8080/api/v1/user/search/save`, formData)
+        .then((response) => {
+          console.log("res: ", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching jobs:", error);
+        });
+    } else {
+      console.log("ko có dữ liệu nên ko tạo search");
+    }
   }, [selectedIndustry, selectedLocation, selectedPosition, selectedWorkType]);
+
+  function handleSearch() {
+    // Make an HTTP GET request to the backend API endpoint
+    if (searchKeyword?.length > 0) {
+      dispatch(
+        filterSlice.actions.filter({
+          selectedIndustry,
+          selectedLocation,
+          selectedPosition,
+          selectedWorkType,
+          searchKeyword,
+        })
+      );
+      const formData = {
+        userId: localStorage.getItem("userId"), // Thay thế 'YourUserId' bằng giá trị thực tế
+        keySearch: searchKeyword, // Thêm các trường dữ liệu khác nếu cần
+        industries: selectedIndustry,
+        positions: selectedPosition,
+        locations: selectedLocation,
+        workTypes: selectedWorkType,
+      };
+      console.log("send search: ", formData);
+      axios
+        .post(`http://localhost:8080/api/v1/user/search/save`, formData)
+        .then((response) => {
+          // console.log("res: ", response.data);
+          dispatch(counterSlice.actions.descrease());
+        })
+        .catch((error) => {
+          console.error("Error fetching jobs:", error);
+        });
+    }
+
+    setSelectedWorkType("");
+    setSelectedLocation("");
+    setSelectedIndustry("");
+    setSelectedPosition("");
+  }
 
   return (
     <div className="categories">
@@ -110,6 +175,8 @@ function Category() {
                 setSelectedIndustry("");
                 setSelectedLocation("");
                 setSelectedPosition("");
+                setSearchKeyword("");
+                dispatch(filterSlice.actions.filter({ searchKeyword }));
               }}
               variant="contained"
               style={{
@@ -208,10 +275,23 @@ function Category() {
                 </NativeSelect>
               </FormControl>
             </Box>
+
+            <Box className=" single_field sort-btn" sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <input
+                  className="wide"
+                  type="text"
+                  value={searchKeyword}
+                  placeholder="Search..."
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                />
+              </FormControl>
+            </Box>
             <Button
               type="submit"
               variant="contained"
               style={{ background: "rgb(34 179 193)" }}
+              onClick={handleSearch}
             >
               Search
             </Button>

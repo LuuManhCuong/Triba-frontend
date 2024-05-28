@@ -92,17 +92,34 @@ function Post() {
     }
   }, [scrollTop]);
 
+  useEffect(() => {
+    // console.log("key: ", filter?.searchKeyword);
+    axios
+      .get(
+        `http://localhost:8080/api/v1/user/job/search?keyword=${filter?.searchKeyword}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setJobs(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching jobs:", error);
+        setIsLoading(true);
+      });
+  }, [filter?.searchKeyword]);
+
   const fetchJobs = useCallback(() => {
     setIsLoading(true);
-    console.log("chekc: ", filter.selectedIndustry);
-    const url = `http://localhost:8080/api/v1/user/job/filter?industryName=${filter.selectedIndustry}
-    &positionName=${filter.selectedPosition}
-    &locationName=${filter.selectedLocation}
-    &workTypeName=${filter.selectedWorkType}
+    // console.log("chekc: ", filter?.selectedIndustry);
+    const url = `http://localhost:8080/api/v1/user/job/filter?industryName=${filter?.selectedIndustry}
+    &positionName=${filter?.selectedPosition}
+    &locationName=${filter?.selectedLocation}
+    &workTypeName=${filter?.selectedWorkType}
     &page=${page}
     &size=${size}`;
 
-    console.log(url);
+    // console.log(url);
     axios
       .get(url)
       .then((response) => {
@@ -119,10 +136,10 @@ function Post() {
   }, [
     page,
     size,
-    filter.selectedIndustry,
-    filter.selectedPosition,
-    filter.selectedLocation,
-    filter.selectedWorkType,
+    filter?.selectedIndustry,
+    filter?.selectedPosition,
+    filter?.selectedLocation,
+    filter?.selectedWorkType,
   ]);
 
   const fetchData = async () => {
@@ -142,10 +159,10 @@ function Post() {
 
   useEffect(() => {
     if (
-      filter.selectedIndustry ||
-      filter.selectedPosition ||
-      filter.selectedLocation ||
-      filter.selectedWorkType
+      filter?.selectedIndustry ||
+      filter?.selectedPosition ||
+      filter?.selectedLocation ||
+      filter?.selectedWorkType
     ) {
       setIsLoading(true);
       fetchJobs();
@@ -153,7 +170,13 @@ function Post() {
       setIsLoading(true);
       fetchData();
     }
-  }, [fetchJobs, filter]);
+  }, [
+    fetchJobs,
+    filter?.selectedIndustry,
+    filter?.selectedLocation,
+    filter?.selectedPosition,
+    filter?.selectedWorkType,
+  ]);
 
   const sendEmail = async (email, subject, text) => {
     const token = localStorage.getItem("access_token");
@@ -192,7 +215,7 @@ function Post() {
   };
 
   function handleApplyJob(job) {
-    console.log("applying");
+    // console.log("applying");
     const userId = localStorage.getItem("userId");
     const userEmail = localStorage.getItem("email");
     const employerEmail = job.user.email;
@@ -284,13 +307,14 @@ function Post() {
       const response = await axios.post(
         `http://localhost:8080/api/v1/user/like?jobId=${jobId}&userId=${userId}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       setLiked(response.data);
       // Kiểm tra nếu yêu cầu thành công
     } catch (error) {
       console.error("Error while sending like request:", error);
     }
   };
+
   return (
     <>
       <Modal
@@ -320,7 +344,7 @@ function Post() {
           <ToastContainer style={{ zIndex: 23 }} />
 
           {jobs?.map((job, i) => (
-            <div key={i} className="post shadow-md">
+            <div key={i} className="post shadow-xl">
               <div className="post-head">
                 <div className="user">
                   <img

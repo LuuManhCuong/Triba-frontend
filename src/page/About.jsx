@@ -7,14 +7,18 @@ import MoreAbout from "../components/wraperAbout/MoreAbout";
 import BestLocations from "../components/wraperAbout/BestLocations";
 import CallToAction from "../components/wraper/CallToAction";
 import Footer from "../components/wraper/Footer";
+import SliderArea from "../JobBroadComponent/SliderArea";
 
 function About() {
   return (
     <div>
       <Header></Header>
-      <MainBanner />
+      {/* <MainBanner /> */}
+      <div className="job-broad">
+        <SliderArea></SliderArea>
+      </div>
       <Cities />
-      <WeeklyOffers />
+      {/* <WeeklyOffers /> */}
       <MoreAbout />
       <BestLocations />
       <Footer></Footer>

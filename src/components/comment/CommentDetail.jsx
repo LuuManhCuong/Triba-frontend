@@ -20,7 +20,8 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
   const [stompClient, setStompClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [jobDetail, setJobDetail] = useState(null);
-
+  const avatar = localStorage.getItem("avatar");
+  // console.log("avat: ", avatar);
   useEffect(() => {
     adjustTextareaHeight();
   }, [newComment]);
@@ -103,14 +104,12 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
     }
   };
 
+  // console.log("comment: ", comments);
   return (
     <div className="comment-block">
       <div className="comment-input shadow-md">
         <div className="user">
-          <img
-            src="https://yt3.ggpht.com/WLwD-mQrBHLv1isMGjCdcBv9evwumLpPgOFP14p7OR9FRAuiEERRHV5weM-LdlgPCZPk3qUf=s88-c-k-c0x00ffffff-no-rj"
-            alt="avt"
-          />
+          <img src={avatar} alt="avt" />
           <div className="write-comment">
             <textarea
               ref={textareaRef}
@@ -129,10 +128,7 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
         {comments?.map((comment, index) => (
           <div key={index} className="comment-item shadow-md">
             <div className="user">
-              <img
-                src="https://yt3.ggpht.com/WLwD-mQrBHLv1isMGjCdcBv9evwumLpPgOFP14p7OR9FRAuiEERRHV5weM-LdlgPCZPk3qUf=s88-c-k-c0x00ffffff-no-rj"
-                alt="avt"
-              />
+              <img src={comment?.user?.avatar} alt="avt" />
               <div className="user-infor">
                 <h3>
                   {comment.user?.firstName} {comment.user?.lastName}
@@ -141,7 +137,7 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
               </div>
             </div>
             <div className="content">
-              <p>{comment.content}</p>
+              <p className="cm-content">{comment.content}</p>
               <div className="action">
                 <div className="like">Yêu thích</div>
                 <div className="reply">Phản hồi</div>

@@ -38,28 +38,28 @@ function Cities() {
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
+                        src="https://a0.muscache.com/im/pictures/63127938/e69a7563_original.jpg?im_w=720"
                         alt=""
                       />
-                      <h4>Havana</h4>
+                      <h4>DaNang</h4>
                     </div>
                   </div>
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
+                        src="https://a0.muscache.com/im/pictures/miso/Hosting-743842439028434931/original/8f48c20b-7c0c-4136-88fd-de2e0da70e27.jpeg?im_w=720"
                         alt=""
                       />
-                      <h4>Havana</h4>
+                      <h4>Brazil</h4>
                     </div>
                   </div>
                   <div className="item">
                     <div className="thumb">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTLh0MS56bf3GDC842yDLrea27tLdFVmBFHA&s"
+                        src="https://a0.muscache.com/im/pictures/8f64650d-be85-420d-98fc-1a63d009cf4e.jpg?im_w=720"
                         alt=""
                       />
-                      <h4>Havana</h4>
+                      <h4>Manila</h4>
                     </div>
                   </div>
                 </Slider>

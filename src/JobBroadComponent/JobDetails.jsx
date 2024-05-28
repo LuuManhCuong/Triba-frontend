@@ -211,20 +211,32 @@ const JobDetails = () => {
                         <h4>{jobs?.title}</h4>
                       </a>
                       <div className="links_locat d-flex align-items-center">
-                        <div className="location">
-                          {jobs?.locations?.map((e, i) => (
-                            <p key={i}>
-                              <i className="fa fa-map-marker"></i>
-                              {e.name}
-                            </p>
-                          ))}
+                        <div className="location" style={{ display: "flex" }}>
+                          <img
+                            style={{
+                              width: "30px",
+                              height: "30px",
+                              borderRadius: "50px",
+                              marginRight: "5px",
+                            }}
+                            src={jobs?.user?.avatar}
+                            alt=""
+                          />
+                          <p>
+                            {jobs?.user?.lastName + " " + jobs?.user?.firstName}
+                          </p>
                         </div>
                         <div className="location">
-                          {jobs?.workTypes?.map((e, i) => (
-                            <p key={i}>
-                              <i className="fa fa-clock-o"></i> {e.name}
-                            </p>
-                          ))}
+                          <p>
+                            <i className="fa fa-map-marker"></i>
+                            {jobs?.address}
+                          </p>
+                        </div>
+                        <div className="location">
+                          <p>
+                            <i className="fa fa-clock-o"></i>{" "}
+                            {jobs?.positions[0]?.name}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -327,7 +339,10 @@ const JobDetails = () => {
                   hiddenInfo={true}
                   jobId={jobs?.jobId}
                 ></CommentDetail>
-                {/* <form action="#">
+              </div>
+              <div className="apply_job_form white-bg">
+                <form action="#">
+                  <h3>Send an email</h3>
                   <div className="row">
                     <div className="col-md-6">
                       <div className="input_field">
@@ -368,7 +383,7 @@ const JobDetails = () => {
                             className="custom-file-label"
                             htmlFor="inputGroupFile03"
                           >
-                            Upload CV
+                            {/* Upload CV */}
                           </label>
                         </div>
                       </div>
@@ -385,7 +400,17 @@ const JobDetails = () => {
                       </div>
                     </div>
                   </div>
-                </form> */}
+                  <div className="col-md-12">
+                    <div className="submit_btn">
+                      <button
+                        className="boxed-btn3 w-100"
+                        onClick={() => handleApplyJob(jobs)}
+                      >
+                        Apply Now
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
             <div className="col-lg-4">
@@ -402,7 +427,7 @@ const JobDetails = () => {
                       Published on: <span>{jobs?.createAt}</span>
                     </li>
                     <li>
-                      Position: <span>{jobs?.positions[0].name}</span>
+                      Position: <span>{jobs?.positions[0]?.name}</span>
                     </li>
                     <li>
                       Salary: <span>{jobs?.salary}</span>
@@ -411,7 +436,7 @@ const JobDetails = () => {
                       Location: <span>{jobs?.address}</span>
                     </li>
                     <li>
-                      Job Nature: <span>{jobs?.workTypes[0].name}</span>
+                      Job Nature: <span>{jobs?.workTypes[0]?.name}</span>
                     </li>
                   </ul>
                 </div>

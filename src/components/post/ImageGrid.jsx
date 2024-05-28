@@ -8,7 +8,7 @@ import { countImgSliceSelector } from "../../redux-tookit/selector";
 import { MdClear } from "react-icons/md";
 import ImageSlick from "./ImageSlick";
 
-function ImageGrid({ imgs }) {
+function ImageGrid({ imgs, isRecommend }) {
   // console.log("imgsss: ", imgs);
   const { value } = useSelector(countImgSliceSelector);
   const [activeImg, setActiveImg] = useState(0);
@@ -38,7 +38,11 @@ function ImageGrid({ imgs }) {
             <ImageSlick imgs={showImgs} activeImg={activeImg}></ImageSlick>
           ) : (
             <div className="img-inner">
-              <img src={showImgs[0]} alt="img" />
+              <img
+                style={{ height: "100vh", width: "auto", margin: "auto" }}
+                src={showImgs[0]}
+                alt="img"
+              />
             </div>
           )}
         </Modal.Body>
@@ -46,7 +50,7 @@ function ImageGrid({ imgs }) {
       <div>
         {imgs?.length === 1 && (
           <img
-            style={{ width: "70%", margin: "auto" }}
+            style={{ width: isRecommend ? "90%" : "70%", margin: "auto" }}
             onClick={() => {
               setShow(true);
               setShowImgs(imgs);

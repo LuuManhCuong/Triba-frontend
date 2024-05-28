@@ -104,6 +104,7 @@ const EditProfile = ({ user }) => {
         localStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("email", response.data.user.email);
         localStorage.setItem("role", response.data.user.role);
+        localStorage.setItem("avatar", response.data.user?.avatar);
 
         dispatch(accountSlice.actions.login(response.data));
         dispatch(counterSlice.actions.increase());

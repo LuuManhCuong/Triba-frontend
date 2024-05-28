@@ -437,7 +437,7 @@ function CountryItem({
         </Modal.Body>
       </Modal>
 
-      <div className="item shadow-md">
+      <div className="item shadow-xl">
         <div className="row">
           <div className="col-lg-4 col-sm-5">
             <div className="image">
@@ -447,7 +447,9 @@ function CountryItem({
 
           <div className="col-lg-8 col-sm-7">
             <div className="right-content">
-              <h4>{title}</h4>
+              <h4>
+                <a href={`/job/detail/${jobId}`}>{title}</a>
+              </h4>
               <span>{time}</span>
               {owner ? (
                 <div
@@ -458,7 +460,7 @@ function CountryItem({
                   <a>...</a>
 
                   {item && (
-                    <ul className="sub-action shadow-lg">
+                    <ul className="sub-action shadow-xl">
                       <li
                         onClick={() => handleEdit()}
                         className="sub-action-item"
@@ -492,7 +494,7 @@ function CountryItem({
                     );
                   }}
                 >
-                  <a>Chi tiết</a>
+                  <a>View More</a>
                 </div>
               )}
               <p>{job?.description}</p>

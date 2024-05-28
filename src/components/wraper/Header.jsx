@@ -11,12 +11,13 @@ import { useNavigate } from "react-router-dom";
 function Header() {
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
-  if (token == null) {
-    navigate("/login");
-  }
 
   const checkAdmin = localStorage.getItem("role");
-
+  useEffect(() => {
+    if (token == null) {
+      navigate("/login");
+    }
+  }, [token]);
   function handleLogout() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
@@ -93,11 +94,12 @@ function Header() {
                                     <a href="/index">Home</a>
                                   </li>
                                   <li>
-                                    <a href="/">Explore</a>
-                                  </li>
-                                  <li>
                                     <a href="/deals">Jobs</a>
                                   </li>
+                                  <li>
+                                    <a href="/">Explore</a>
+                                  </li>
+
                                   <li>
                                     <a href="/about">About</a>
                                   </li>

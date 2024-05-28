@@ -38,7 +38,7 @@ function Banner() {
                   Explore thousands of job opportunities from leading companies
                   in the market
                 </h2>
-                <h1>TRIBA-CARREER JOURNEY</h1>
+                <h1>TRIBA-CAREER JOURNEY</h1>
                 <div className="border-button">
                   <a href="/">Go There</a>
                 </div>

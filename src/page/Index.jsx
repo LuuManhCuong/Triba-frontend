@@ -17,10 +17,11 @@ function Index() {
   const [jobs, setJobs] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [recommend, setRecommend] = useState([]);
 
   function handleChange(event: React.ChangeEvent<unknown>, value: number) {
     setPage(value > 1 ? value - 1 : value === 1 && 0);
-    console.log("value: ", value);
+    // console.log("value: ", value);
     //   window.scrollTo({ top: 500, behavior: "smooth" });
   }
   const fetchData = async () => {
@@ -28,7 +29,7 @@ function Index() {
       const response = await axios.get(
         `http://localhost:8080/api/v1/user/job?page=${page}&size=${size}`
       );
-      console.log("res ", response.data);
+      // console.log("res ", response.data);
       setJobs(response.data.content);
       setTotalPage(response.data.totalPages);
       setIsLoading(false);
@@ -37,20 +38,36 @@ function Index() {
     }
   };
   useEffect(() => {
-    console.log("page: ", page);
     fetchData();
   }, [page]);
 
-  console.log("data: ", jobs);
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      axios
+        .get(`http://127.0.0.1:8000/fetch-job/${userId}/`)
+        .then((response) => {
+          // console.log("suggest: ", response.data.recommended_jobs);
+          setRecommend(response?.data?.recommended_jobs);
+        })
+        .catch((error) => {
+          console.error("Error fetching jobs:", error);
+        });
+    } else {
+      console.error("No user ID found in localStorage");
+    }
+  }, []);
+  // console.log("suggest: ", recommend);
 
   return (
     <div>
       <Header />
       <Banner />
-      <div className="job-broad">
-        <CategoryArea></CategoryArea>
-      </div>
-      {/* <WeeklyOffers></WeeklyOffers> */}
+      {recommend?.length > 0 ? (
+        <WeeklyOffers recommend={recommend}></WeeklyOffers>
+      ) : (
+        ""
+      )}
 
       <div className="row title-gr">
         <div className="col-lg-5">
