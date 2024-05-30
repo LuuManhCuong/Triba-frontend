@@ -34,11 +34,11 @@ function Login() {
   const onSubmit = (data) => {
     if (data.password === data.confirm) {
       setLogErr("");
-      console.log("data: ", data);
+      // console.log("data: ", data);
       axios
         .post("http://localhost:8080/api/v1/auth/sigup", data)
         .then(function (response) {
-          console.log("Response:", response.data);
+          // console.log("Response:", response.data);
         })
         .then(() => {
           setFormActive(!formActive);
@@ -72,16 +72,17 @@ function Login() {
     }
   };
   const [wrongAc, setWrongAc] = useState();
+
   function onLogin() {
-    console.log(email, password);
+    // console.log(email, password);
 
     if (email?.trim() === undefined && password?.trim() === undefined) {
       setEmail("");
       setPassword("");
-      console.log("here", email?.trim(), password?.trim());
+      // console.log("here", email?.trim(), password?.trim());
     } else {
       let account = { email, password };
-      console.log("acoutn", account);
+      // console.log("acoutn", account);
       axios
         .post("http://localhost:8080/api/v1/auth/sigin", account)
         .then(function (response) {
@@ -92,7 +93,11 @@ function Login() {
           localStorage.setItem("userId", response.data.user.id);
           localStorage.setItem("email", response.data.user.email);
           localStorage.setItem("role", response.data.user?.role);
-          localStorage.setItem("avatar", response.data.user?.avatar);
+          localStorage.setItem(
+            "avatar",
+            response.data.user?.avatar ||
+              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+          );
 
           dispatch(accountSlice.actions.login(response.data));
         })
@@ -102,6 +107,7 @@ function Login() {
 
         .catch(function (error) {
           console.log(error);
+          setWrongAc("Không tìm thấy tài khoản này!");
         });
     }
   }
@@ -146,18 +152,6 @@ function Login() {
               <div className="form-group">
                 <div>
                   <div>
-                    {wrongAc && (
-                      <span
-                        style={{
-                          color: "red",
-                          marginLeft: "10spanx",
-                          marginTop: "5px",
-                        }}
-                        role="alert"
-                      >
-                        {wrongAc}
-                      </span>
-                    )}
                     {email?.trim() <= 0 ? (
                       <span
                         style={{
@@ -203,6 +197,7 @@ function Login() {
                     Password
                   </span>
                 )}
+
                 <input
                   name="password"
                   id="user-password"
@@ -213,6 +208,19 @@ function Login() {
                 />
                 <span className="form-message"></span>
               </div>
+
+              {wrongAc && (
+                <span
+                  style={{
+                    color: "red",
+                    marginLeft: "10spanx",
+                    marginTop: "5px",
+                  }}
+                  role="alert"
+                >
+                  {wrongAc}
+                </span>
+              )}
               <div className="form-group">
                 <button className="form-submit" type="submit">
                   Submit

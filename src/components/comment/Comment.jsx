@@ -6,11 +6,13 @@ import {
   accountSelector,
   showComponentSelector,
 } from "../../redux-tookit/selector";
+import { BsReply } from "react-icons/bs";
 import { showComponentSlice } from "../../redux-tookit/reducer/showComponent";
 import axios from "axios";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { ToastContainer, toast } from "react-toastify";
+import { FaRegHeart } from "react-icons/fa6";
 
 function Comment({ clear, hiddenInfo, homeJobId }) {
   const dispatch = useDispatch();
@@ -168,14 +170,15 @@ function Comment({ clear, hiddenInfo, homeJobId }) {
               </h3>
               <p className="time">{jobDetail?.createAt}</p>
             </div>
-            <h2 className="content-cm">
+            <h2
+              className="content-cm"
+              style={{ color: "var(--primary-color)", fontSize: "1.6rem" }}
+            >
               {jobDetail?.title}{" "}
               <ul className="info">
                 <li>
                   <i className="fa fa-user"></i>{" "}
-                  {jobDetail?.industries.map((e, i) => (
-                    <>{e.name + " "}</>
-                  ))}
+                  {jobDetail?.industries[0]?.name}
                 </li>
                 <li>
                   <i className="fa fa-globe"></i> {jobDetail?.createAt}
@@ -190,7 +193,13 @@ function Comment({ clear, hiddenInfo, homeJobId }) {
       )}
       <div className="comment-input shadow-md">
         <div className="user">
-          <img src={avatar} alt="avt" />
+          <img
+            src={
+              avatar ||
+              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+            }
+            alt="avt"
+          />
 
           <div className="write-comment">
             <textarea
@@ -206,7 +215,13 @@ function Comment({ clear, hiddenInfo, homeJobId }) {
       {comments?.map((comment, index) => (
         <div key={index} className="comment-item shadow-md">
           <div className="user">
-            <img src={comment?.user?.avatar} alt="avt" />
+            <img
+              src={
+                comment?.user?.avatar ||
+                "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+              }
+              alt="avt"
+            />
 
             <div className="user-infor">
               <h3>
@@ -218,8 +233,12 @@ function Comment({ clear, hiddenInfo, homeJobId }) {
           <div className="content">
             <p>{comment.content}</p>
             <div className="action">
-              <div className="like">Yêu thích</div>
-              <div className="reply">Phản hồi</div>
+              <div className="like">
+                <FaRegHeart></FaRegHeart> like
+              </div>
+              <div className="reply">
+                <BsReply /> Reply
+              </div>
             </div>
           </div>
         </div>

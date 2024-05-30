@@ -4,6 +4,7 @@ import "../../assets/css/templatemo-woox-travel.css";
 // import "../../assets/css/owl.css";
 import "../../assets/css/animate.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import DialogflowMessenger from "./DialogFlowMessenger";
 
 function Footer() {
   return (
@@ -41,6 +42,7 @@ function Footer() {
             </div>
           </div>
         </div>
+        <DialogflowMessenger></DialogflowMessenger>
       </footer>
     </>
   );

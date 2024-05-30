@@ -10,11 +10,13 @@ import { MdClear } from "react-icons/md";
 import FromCreateJob from "../components/forms/FormCreateJob";
 import ImageGrid from "../components/post/ImageGrid";
 import { accountSlice } from "../redux-tookit/reducer/accountSlice";
+import EditProfile from "../components/project/EditProfile";
 
 function UserListingCard({ user }) {
   let userId = localStorage.getItem("userId");
   const naviagte = useNavigate();
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
 
   const handleToggleRole = (userId) => {
     axios
@@ -23,7 +25,7 @@ function UserListingCard({ user }) {
         console.log(response.data);
         toast.success("Update Role Successfully!", {
           position: "top-right",
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -37,12 +39,58 @@ function UserListingCard({ user }) {
         console.error("Error toggling user role:", error);
       });
   };
+
+  function handleDeleteUser(userId) {
+    console.log("delete user: " + userId);
+
+    axios
+      .delete(`http://localhost:8080/api/v1/user/delete/${userId}`)
+      .then((response) => {
+        console.log(response.data);
+        toast.success("Delete user Successfully!", {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch(counterSlice.actions.increase()); // Refresh the user list after changing the role
+      })
+      .catch((error) => {
+        console.error("Error delete user:", error);
+      });
+  }
   return (
     <div className="col-lg-12 col-md-12">
       <div className="single_jobs white-bg d-flex justify-content-between">
         <div className="jobs_left d-flex align-items-center">
           <ToastContainer />
           {/* Modal Edit */}
+          <Modal
+            className="moda"
+            show={show}
+            onHide={() => setShow(false)}
+            dialogClassName="modal-90w"
+            aria-labelledby="example-custom-modal-styling-title"
+          >
+            <Modal.Title
+              className="header-moda"
+              id="example-custom-modal-styling-title"
+            >
+              Edit user
+              <button onClick={() => setShow(false)}>
+                <MdClear></MdClear>
+              </button>
+            </Modal.Title>
+            <Modal.Body>
+              <div style={{ width: "70vw", margin: "auto" }}>
+                <EditProfile user={user}></EditProfile>
+              </div>
+            </Modal.Body>
+          </Modal>
           <div className="thumb">
             <img
               style={{
@@ -111,7 +159,7 @@ function UserListingCard({ user }) {
             <div
               className="apply_now"
               style={{ margin: "5px", width: "100px", zoom: "0.6" }}
-              // onClick={() => handleDelete(job.jobId)}
+              onClick={() => handleDeleteUser(user?.userId)}
             >
               <a
                 style={{ display: "block", background: "red" }}
@@ -127,6 +175,15 @@ function UserListingCard({ user }) {
             >
               <a style={{ display: "block" }} className="boxed-btn3">
                 Change Role
+              </a>
+            </div>
+            <div
+              className="apply_now"
+              style={{ margin: "5px", width: "100px", zoom: "0.6" }}
+              onClick={() => setShow(!show)}
+            >
+              <a style={{ display: "block" }} className="boxed-btn3">
+                Edit
               </a>
             </div>
           </>

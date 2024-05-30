@@ -12,7 +12,15 @@ function Layout({ children }) {
   return (
     <>
       <Header></Header>
-      <Container style={{ marginTop: "100px" }}>
+      <Container
+        className="shadow-lg"
+        style={{
+          margin: "auto",
+          marginTop: "90px",
+          width: "85vw",
+          padding: "4px 40px 40px",
+        }}
+      >
         <Row>
           {/* <Col xs={3}>
             <Sidebar></Sidebar>

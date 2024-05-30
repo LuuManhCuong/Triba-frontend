@@ -128,10 +128,12 @@ function JobListingCard({ job, isAdmin }) {
             </a>
             <div className="links_locat d-flex align-items-center">
               <div className="location">
-                <p style={{ display: "flex" }}>
+                <p style={{ display: "flex", alignItems: "center" }}>
                   <img
-                    src={job?.user?.avatar}
-                    alt="avt"
+                    src={
+                      job?.user?.avatar ||
+                      "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                    }
                     style={{
                       width: "20px",
                       height: "20px",

@@ -10,6 +10,7 @@ import { Pagination } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
 import CategoryArea from "../JobBroadComponent/CategoryArea";
+import DialogflowMessenger from "../components/wraper/DialogFlowMessenger";
 
 function Index() {
   const [page, setPage] = useState(0);
@@ -22,7 +23,10 @@ function Index() {
   function handleChange(event: React.ChangeEvent<unknown>, value: number) {
     setPage(value > 1 ? value - 1 : value === 1 && 0);
     // console.log("value: ", value);
-    //   window.scrollTo({ top: 500, behavior: "smooth" });
+    window.scrollTo({
+      top: window.scrollY - 1200,
+      behavior: "smooth",
+    });
   }
   const fetchData = async () => {
     try {
@@ -98,7 +102,6 @@ function Index() {
           onChange={handleChange}
         />
       </Stack>
-
       {/* <CallToAction /> */}
       <Footer />
     </div>

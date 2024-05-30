@@ -164,7 +164,7 @@ function FromCreateJob({ jobEdit }) {
   const handleIndustriesChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
-      if (selectedIndustries.length < 3) {
+      if (selectedIndustries.length < 2) {
         setSelectedIndustries([...selectedIndustries, value]);
       } else {
         // Remove the first selected item and add the new one
@@ -181,7 +181,7 @@ function FromCreateJob({ jobEdit }) {
   const handlePositionChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
-      if (selectedPosition.length < 3) {
+      if (selectedPosition.length < 2) {
         setSelectedPosition([...selectedPosition, value]);
       } else {
         // Remove the first selected item and add the new one
@@ -615,29 +615,23 @@ function FromCreateJob({ jobEdit }) {
                                         value={formData?.description}
                                         onChange={handleChange}
                                       ></textarea>
-                                      {/* <select
-                                        name="Destination"
-                                        className="form-select"
-                                        aria-label="Default select example"
-                                        id="chooseCategory"
-                                        onChange="this.form.click()"
+                                    </fieldset>
+                                  </div>
+
+                                  <div className="col-lg-12">
+                                    <fieldset>
+                                      <label
+                                        htmlFor="chooseDestination"
+                                        className="form-label"
                                       >
-                                        <option selected>
-                                          ex. Switzerland, Lausanne
-                                        </option>
-                                        <option value="Italy, Roma">
-                                          Italy, Roma
-                                        </option>
-                                        <option value="France, Paris">
-                                          France, Paris
-                                        </option>
-                                        <option value="Engaland, London">
-                                          Engaland, London
-                                        </option>
-                                        <option value="Switzerland, Lausanne">
-                                          Switzerland, Lausanne
-                                        </option>
-                                      </select> */}
+                                        Role & Benefit
+                                      </label>
+                                      <textarea
+                                        className="form-control"
+                                        id="Role"
+                                        name="Role"
+                                        placeholder="Role & Benefit"
+                                      ></textarea>
                                     </fieldset>
                                   </div>
 
@@ -682,7 +676,9 @@ function FromCreateJob({ jobEdit }) {
                               </form>
                               <Row className="select-cate">
                                 <Col xs={3} className="cate-item">
-                                  Category ({selectedWorkType?.length} / 2)
+                                  <h3>
+                                    Category ({selectedWorkType?.length} / 2)
+                                  </h3>
                                   <div className="cate-item-h">
                                     {jobCategories.workTypes.map(
                                       (type, index) => (
@@ -711,7 +707,9 @@ function FromCreateJob({ jobEdit }) {
                                 </Col>
 
                                 <Col xs={3} className="cate-item">
-                                  Region ({selectedLocation?.length} / 2)
+                                  <h3>
+                                    Region ({selectedLocation?.length} / 2)
+                                  </h3>
                                   <div className="cate-item-h">
                                     {jobCategories.locations.map(
                                       (type, index) => (
@@ -740,7 +738,11 @@ function FromCreateJob({ jobEdit }) {
                                 </Col>
 
                                 <Col xs={3} className="cate-item">
-                                  Industries ({selectedIndustries?.length} / 3)
+                                  <h3>
+                                    {" "}
+                                    Industries ({selectedIndustries?.length} /
+                                    2)
+                                  </h3>
                                   <div className="cate-item-h">
                                     {jobCategories.industries.map(
                                       (type, index) => (
@@ -768,7 +770,9 @@ function FromCreateJob({ jobEdit }) {
                                   </div>
                                 </Col>
                                 <Col xs={3} className="cate-item">
-                                  Position ({selectedPosition?.length} / 3 )
+                                  <h3>
+                                    Position ({selectedPosition?.length} / 2 )
+                                  </h3>
                                   <div className="cate-item-h">
                                     {jobCategories.positions.map(
                                       (type, index) => (

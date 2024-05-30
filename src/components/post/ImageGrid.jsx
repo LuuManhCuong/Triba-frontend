@@ -50,6 +50,7 @@ function ImageGrid({ imgs, isRecommend }) {
       <div>
         {imgs?.length === 1 && (
           <img
+            className="shadow-lg"
             style={{ width: isRecommend ? "90%" : "70%", margin: "auto" }}
             onClick={() => {
               setShow(true);

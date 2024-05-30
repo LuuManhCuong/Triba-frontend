@@ -6,27 +6,33 @@ import "../../assets/css/templatemo-woox-travel.css";
 import "../../assets/css/animate.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { IoLogoFirebase } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 function Header() {
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
+  const username = localStorage.getItem("email");
+  const avatar = localStorage.getItem("avatar");
 
   const checkAdmin = localStorage.getItem("role");
   useEffect(() => {
     if (token == null) {
       navigate("/login");
     }
-  }, [token]);
+  }, [token, navigate]);
+
   function handleLogout() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("userId");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("avatar");
 
     navigate("/login");
   }
+
   return (
     <header
       className="header-area header-sticky job-broad"
@@ -36,32 +42,6 @@ function Header() {
         <div className="row">
           <div className="col-12">
             <nav className="main-nav">
-              {/* <ul className="nav">
-                <li>
-                  <a href="/index" className="active">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="/">Explore</a>
-                </li>
-                <li>
-                  <a href="/deals">Jobs</a>
-                </li>
-                <li>
-                  <a href="/about">About</a>
-                </li>
-
-                <li>
-                  <a href="/admin">Admin</a>
-                </li>
-                <li>
-                  <a href="/new-post">Post</a>
-                </li>
-                <li>
-                  <a href="/personal">Profile</a>
-                </li>
-              </ul> */}
               <header>
                 <div className="header-area">
                   <div id="sticky-header" className="main-header-area">
@@ -72,16 +52,15 @@ function Header() {
                             <div className="logo">
                               <a
                                 href="/index"
-                                className="logo"
                                 style={{
                                   color: "white",
                                   fontSize: "3rem",
                                   display: "flex",
                                   fontWeight: "600",
                                   justifyItems: "center",
+                                  alignItems: "center",
                                 }}
                               >
-                                {/* <img src={logo} alt="Logo" /> */}
                                 <IoLogoFirebase /> Triba
                               </a>
                             </div>
@@ -91,47 +70,106 @@ function Header() {
                               <nav>
                                 <ul id="navigation">
                                   <li>
-                                    <a href="/index">Home</a>
+                                    <NavLink
+                                      to="/index"
+                                      className={({ isActive }) =>
+                                        isActive ? "active link" : "link"
+                                      }
+                                    >
+                                      Home
+                                    </NavLink>
                                   </li>
                                   <li>
-                                    <a href="/deals">Jobs</a>
+                                    <NavLink
+                                      to="/deals"
+                                      className={({ isActive }) =>
+                                        isActive ? "active link" : "link"
+                                      }
+                                    >
+                                      Jobs
+                                    </NavLink>
                                   </li>
                                   <li>
-                                    <a href="/">Explore</a>
+                                    <NavLink
+                                      to="/"
+                                      className={({ isActive }) =>
+                                        isActive ? "active link" : "link"
+                                      }
+                                    >
+                                      Explore
+                                    </NavLink>
                                   </li>
-
                                   <li>
-                                    <a href="/about">About</a>
+                                    <NavLink
+                                      to="/about"
+                                      className={({ isActive }) =>
+                                        isActive ? "active link" : "link"
+                                      }
+                                    >
+                                      About
+                                    </NavLink>
                                   </li>
-
                                   <li>
-                                    <a href="/personal">Profile</a>
+                                    <NavLink
+                                      to="/new-post"
+                                      className={({ isActive }) =>
+                                        isActive ? "active link" : "link"
+                                      }
+                                    >
+                                      New Post
+                                    </NavLink>
                                   </li>
-
-                                  {checkAdmin === "ADMIN" ? (
+                                  {checkAdmin === "ADMIN" && (
                                     <li>
-                                      <a href="#">
+                                      <NavLink
+                                        to="#"
+                                        className={({ isActive }) =>
+                                          isActive ? "active link" : "link"
+                                        }
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                        }}
+                                      >
                                         Admin <i className="ti-angle-down"></i>{" "}
-                                        <span>v</span>
-                                      </a>
-                                      <ul className="submenu">
+                                        <span>
+                                          <IoMdArrowDropdown />
+                                        </span>
+                                      </NavLink>
+                                      <ul className="submenu shadow-lg">
                                         <li>
-                                          <a href="/admin">Dashboard</a>
+                                          <NavLink
+                                            to="/admin/dashboard"
+                                            className={({ isActive }) =>
+                                              isActive ? "active link" : "link"
+                                            }
+                                          >
+                                            Dashboard
+                                          </NavLink>
                                         </li>
                                         <li>
-                                          <a href="/admin/manage/job">
+                                          <NavLink
+                                            to="/admin/manage/job"
+                                            className={({ isActive }) =>
+                                              isActive ? "active link" : "link"
+                                            }
+                                          >
                                             Manage Post
-                                          </a>
+                                          </NavLink>
                                         </li>
                                         <li>
-                                          <a href="/admin/manage/user">
+                                          <NavLink
+                                            to="/admin/manage/user"
+                                            className={({ isActive }) =>
+                                              isActive ? "active link" : "link"
+                                            }
+                                          >
                                             Manage User
-                                          </a>
+                                          </NavLink>
                                         </li>
                                       </ul>
                                     </li>
-                                  ) : (
-                                    ""
                                   )}
                                 </ul>
                               </nav>
@@ -141,21 +179,70 @@ function Header() {
                             {token == null ? (
                               <div className="Appointment">
                                 <div className="phone_num d-none d-xl-block">
-                                  <a href="/login">Log in</a>
+                                  <NavLink
+                                    to="/login"
+                                    className={({ isActive }) =>
+                                      isActive ? "active link" : "link"
+                                    }
+                                  >
+                                    Log in
+                                  </NavLink>
                                 </div>
                               </div>
                             ) : (
                               <div className="Appointment">
                                 <div className="d-none d-lg-block">
-                                  <a className="boxed-btn3" href="/new-post">
-                                    New Post
-                                  </a>
+                                  <NavLink
+                                    className={({ isActive }) =>
+                                      isActive
+                                        ? "active boxed-btn3"
+                                        : "boxed-btn3"
+                                    }
+                                    to="/personal"
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      fontSize: "1.2rem",
+                                    }}
+                                  >
+                                    {avatar == null ? (
+                                      <img
+                                        style={{
+                                          width: "30px",
+                                          height: "30px",
+                                          borderRadius: "50px",
+                                        }}
+                                        src={
+                                          "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
+                                        }
+                                        alt="avt"
+                                      />
+                                    ) : (
+                                      <img
+                                        style={{
+                                          width: "30px",
+                                          height: "30px",
+                                          borderRadius: "50px",
+                                        }}
+                                        src={avatar}
+                                        alt="avt"
+                                      />
+                                    )}
+                                    {username}
+                                  </NavLink>
                                 </div>
+
                                 <div
                                   className="d-none d-lg-block"
                                   onClick={handleLogout}
                                 >
-                                  <a className="boxed-btn3">Logout</a>
+                                  <a
+                                    style={{ color: "red !important" }}
+                                    className="boxed-btn3"
+                                  >
+                                    Logout
+                                  </a>
                                 </div>
                               </div>
                             )}

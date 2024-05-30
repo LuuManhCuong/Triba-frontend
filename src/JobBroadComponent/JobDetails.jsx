@@ -202,8 +202,11 @@ const JobDetails = () => {
                           height: "100%",
                           borderRadius: "10px",
                         }}
-                        src={jobs?.images[0]?.url}
-                        alt=""
+                        src={
+                          jobs?.images[0]?.url ||
+                          "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                        }
+                        alt="avt"
                       />
                     </div>
                     <div className="jobs_conetent">
@@ -219,8 +222,11 @@ const JobDetails = () => {
                               borderRadius: "50px",
                               marginRight: "5px",
                             }}
-                            src={jobs?.user?.avatar}
-                            alt=""
+                            src={
+                              jobs?.user?.avatar ||
+                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                            }
+                            alt="avt"
                           />
                           <p>
                             {jobs?.user?.lastName + " " + jobs?.user?.firstName}

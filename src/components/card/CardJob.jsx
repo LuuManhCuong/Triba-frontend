@@ -361,7 +361,7 @@ function CountryItem({
                             style={{ width: "40px", height: "40px" }}
                             src={
                               apply?.user?.avatar ||
-                              "https://res.cloudinary.com/djcamu6kz/image/upload/v1716456163/buio7bmyejvpe4zxnxbo.png"
+                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
                             }
                             alt="avt"
                           />
@@ -500,7 +500,7 @@ function CountryItem({
               <p>{job?.description}</p>
               <ul className="info">
                 <li>
-                  <i className="fa fa-user"></i> {industry}
+                  <i className="fa fa-user"></i> {job?.industries[0]?.name}
                 </li>
                 <li>
                   <i className="fa fa-globe"></i> {address}

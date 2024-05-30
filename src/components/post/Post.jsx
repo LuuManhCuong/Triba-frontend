@@ -370,7 +370,12 @@ function Post() {
               </div>
 
               <div className="post-body">
-                <h2 className="content">{job.title}</h2>
+                <h2
+                  className="content"
+                  style={{ color: "var(--primary-color)", fontSize: "1.6rem" }}
+                >
+                  {job.title}
+                </h2>
                 <p className="content">{job.description}</p>
                 <ImageGrid imgs={job?.images}></ImageGrid>
               </div>

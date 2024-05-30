@@ -91,38 +91,24 @@ function PostDetail({ imgs }) {
             </div>
           </div>
           <div className="post-body post-body-detail">
-            <h2 className="content">{jobDetail.title}</h2>
+            <h2
+              style={{ color: "var(--primary-color)", fontSize: "1.6rem" }}
+              className="content"
+            >
+              {jobDetail.title}
+            </h2>
             <p className="content">{jobDetail.description}</p>
-
-            {/* {imgs?.length > 1 ? (
-              <Slider {...settings} className="detail-img-slick">
-                {imgs.map((e, i) => (
-                  <div
-                    key={i}
-                    onClick={() => {
-                      setShow(true);
-                      setActiveImg(i);
-                      setShowImgs(imgs);
-                    }}
-                    className="img-slick"
-                  >
-                    <img src={e} alt="img" />
-                  </div>
-                ))}
-              </Slider>
-            ) : (
-              <img
-                onClick={() => {
-                  setShow(true);
-                  setActiveImg(0);
-                  setShowImgs(imgs);
-                }}
-                className="img-Detail"
-                src={imgs[0]}
-                alt="img"
-              />
-            )} */}
-
+            <ul className="info-cmt" >
+              <li>
+                <i className="fa fa-user"></i> {jobDetail?.industries[0]?.name}
+              </li>
+              <li>
+                <i className="fa fa-globe"></i> {jobDetail?.createAt}
+              </li>
+              <li>
+                <i className="fa fa-home"></i> {jobDetail?.salary} vnd
+              </li>
+            </ul>
             <ImageGrid imgs={jobDetail.images}></ImageGrid>
           </div>
           <Comment hiddenInfo={true} />

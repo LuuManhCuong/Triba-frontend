@@ -10,7 +10,8 @@ import { showComponentSlice } from "../../redux-tookit/reducer/showComponent";
 import axios from "axios";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
-
+import { FaRegHeart } from "react-icons/fa6";
+import { BsReply } from "react-icons/bs";
 function CommentDetail({ clear, hiddenInfo, jobId }) {
   const dispatch = useDispatch();
 
@@ -109,7 +110,13 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
     <div className="comment-block">
       <div className="comment-input shadow-md">
         <div className="user">
-          <img src={avatar} alt="avt" />
+          <img
+            src={
+              avatar ||
+              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+            }
+            alt="avt"
+          />
           <div className="write-comment">
             <textarea
               ref={textareaRef}
@@ -128,7 +135,13 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
         {comments?.map((comment, index) => (
           <div key={index} className="comment-item shadow-md">
             <div className="user">
-              <img src={comment?.user?.avatar} alt="avt" />
+              <img
+                src={
+                  comment?.user?.avatar ||
+                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                }
+                alt="avt"
+              />
               <div className="user-infor">
                 <h3>
                   {comment.user?.firstName} {comment.user?.lastName}
@@ -139,8 +152,14 @@ function CommentDetail({ clear, hiddenInfo, jobId }) {
             <div className="content">
               <p className="cm-content">{comment.content}</p>
               <div className="action">
-                <div className="like">Yêu thích</div>
-                <div className="reply">Phản hồi</div>
+                <div className="like">
+                  <FaRegHeart></FaRegHeart> Like
+                </div>
+                <div className="reply">
+                  {" "}
+                  <BsReply />
+                  Reply
+                </div>
               </div>
             </div>
           </div>

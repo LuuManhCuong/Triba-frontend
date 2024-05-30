@@ -144,3 +144,15 @@
     }
   }
 }
+.comment-block .content .action div {
+  padding: 5px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.comment-block .content .action {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}

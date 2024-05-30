@@ -35,8 +35,10 @@ const ProjectCard = ({ project, index }) => (
             {project.assignees[1].name}
           </h2> */}
 
-          <h5 className="mb-1 font-size-15 team-title">{project.title}</h5>
-          <p className="text-muted mb-0 team-description">
+          <h5 className="mb-1 font-size-15 team-title">
+            <a href={`/job/detail/${project.jobId}`}>{project.title}</a>
+          </h5>
+          <p className=" card-bd-text text-muted mb-0 team-description">
             {project.description}
           </p>
         </div>

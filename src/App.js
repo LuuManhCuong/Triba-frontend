@@ -29,7 +29,7 @@ function App() {
       <Route path="/index" element={<Index />} />
       <Route path="/about" element={<About />} />
       <Route path="/deals" element={<Deals />} />
-      <Route path="/admin" element={<Reservation />} />
+      <Route path="/admin/dashboard" element={<Reservation />} />
       <Route path="/new-post" element={<CreateJob />} />
       <Route path="/job/detail/:id" element={<JobDetal />} />
       <Route path="/admin/manage/user" element={<AdminManageUser />} />
