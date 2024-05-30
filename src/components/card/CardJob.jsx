@@ -191,7 +191,7 @@ function CountryItem({
         console.log("imgJob: ", imgJob);
         sendEmail(
           cadidate.email,
-          "CHÚC MỪNG BẠN ĐÃ VƯỌT QUA VÒNG CV",
+          "CHÚC MỪNG HỒ SƠ CỦA BẠN ĐÃ ĐƯỢC NHÀ TUYỂN DỤNG CHẤP THUẬN",
           `Ứng viên  ${cadidate.lastName} ${cadidate.firstName} đã ứng tuyển vào công việc: ${job?.title}.`,
           imgJob
         );
@@ -373,7 +373,10 @@ function CountryItem({
                         <td>
                           <div style={{ width: "50px" }} className="cv-prev">
                             <ImageGrid
-                              imgs={[apply?.user?.coverImg]}
+                              imgs={[
+                                apply?.user?.coverImg ||
+                                  "https://talentbold.com/Upload/news/20200429/160724223_vai-tro-cua-cv-3.png",
+                              ]}
                             ></ImageGrid>
                           </div>
                         </td>
@@ -441,7 +444,13 @@ function CountryItem({
         <div className="row">
           <div className="col-lg-4 col-sm-5">
             <div className="image">
-              <img src={imgSrc} alt={imgSrc} />
+              <img
+                src={
+                  imgSrc ||
+                  "https://talentbold.com/Upload/news/20200429/160724223_vai-tro-cua-cv-3.png"
+                }
+                alt={imgSrc}
+              />
             </div>
           </div>
 

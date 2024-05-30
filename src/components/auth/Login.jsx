@@ -17,7 +17,7 @@ function Login() {
   const [logErr, setLogErr] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  console.log("account: ", account);
+  // console.log("account: ", account);
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
@@ -38,22 +38,31 @@ function Login() {
       axios
         .post("http://localhost:8080/api/v1/auth/sigup", data)
         .then(function (response) {
-          // console.log("Response:", response.data);
-        })
-        .then(() => {
-          setFormActive(!formActive);
-        })
-        .then(() => {
-          toast.success("Đăng ký thành công", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          // console.log("Response:", response?.data?.body?.status);
+          if (response?.data?.body?.status === 400) {
+            toast.warning("Email này đã được đăng ký!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          } else {
+            toast.success("Đăng ký thành công", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setFormActive(!formActive);
+          }
         })
         .catch(function (error) {
           toast.error("Đăng ký thất bại", {

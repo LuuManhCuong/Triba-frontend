@@ -53,15 +53,15 @@ function Banner() {
                           <h4>
                             <span>Community:</span>
                             <br />
-                            10+
+                            100+ <em>User</em>
                           </h4>
                         </div>
                         <div className="col-lg-3 col-sm-6 col-6">
                           <i className="fa fa-globe"></i>
                           <h4>
-                            <span>Region:</span>
+                            <span>Job:</span>
                             <br />
-                            275.400 KM<em>2</em>
+                            2234+<em>Jobs</em>
                           </h4>
                         </div>
                         <div className="col-lg-3 col-sm-6 col-6">
@@ -69,7 +69,7 @@ function Banner() {
                           <h4>
                             <span>Collaboration:</span>
                             <br />
-                            100+
+                            100+ <em>Application</em>
                           </h4>
                         </div>
                         <div className="col-lg-3 col-sm-6 col-6">

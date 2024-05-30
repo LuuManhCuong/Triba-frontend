@@ -49,13 +49,14 @@ function Post() {
   const [totalPage, setTotalPage] = useState(0);
   const [size, setSize] = useState(4);
   let userId = localStorage.getItem("userId");
+
   const [liked, setLiked] = useState(); // Trạng thái like
 
   const postRef = useRef(null);
 
   const [scrollTop, setScrollTop] = useState(0);
   const [clientHeight, setClientHeight] = useState(0);
-  const [scrollHeight, setScrollHeight] = useState(3000);
+  const [scrollHeight, setScrollHeight] = useState(1000);
 
   const imgs = [
     "https://i.ytimg.com/vi/OKZFHo5p4VA/sddefault.jpg",
@@ -70,7 +71,7 @@ function Post() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 1000,
     cssEase: "linear",
   };
   useEffect(() => {
@@ -203,10 +204,10 @@ function Post() {
 
       if (response.status === 200) {
         console.log("Email sent successfully");
-        toast.success("Email sent successfully");
+        // toast.success("Email sent successfully");
       } else {
         console.error("Failed to send email: ", response);
-        toast.error("Failed to send email");
+        // toast.error("Failed to send email");
       }
     } catch (error) {
       console.error("Error occurred while sending email:", error);
@@ -230,7 +231,7 @@ function Post() {
 
       toast.warning(`Bạn không thể ứng tuyển bài viết của mình!`, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -260,14 +261,14 @@ function Post() {
         sendEmail(
           employerEmail,
           "Có ứng viên mới ứng tuyển",
-          `Ứng viên ${account.firstName} ${account.lastName} đã ứng tuyển vào công việc: ${job?.title}.`
+          `Ứng viên ${userEmail} đã ứng tuyển vào công việc: ${job?.title}.`
         );
         toast.success(
           `Ứng tuyển thành công. Nhà tuyển dụng sẽ sớm liên lạc với bạn!`,
           {
             position: "top-right",
             top: 533,
-            autoClose: 3000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -280,7 +281,7 @@ function Post() {
       .catch((error) => {
         toast.warning(`Bạn đã ứng tuyển công việc này!`, {
           position: "top-right",
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

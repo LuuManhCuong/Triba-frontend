@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import country1 from "../../assets/images/country-01.jpg";
 import country2 from "../../assets/images/country-02.jpg";
 import country3 from "../../assets/images/country-03.jpg";
@@ -134,7 +134,9 @@ function VisitCountry({ job }) {
   const [liked, setLiked] = useState(
     job.likes.some((like) => like.user.userId === userId)
   ); // Trạng thái like
-
+  useEffect(() => {
+    setLiked(job.likes.some((like) => like.user.userId === userId));
+  }, [job]);
   const handleLike = async () => {
     // Thực hiện yêu cầu POST đến backend
     // console.log("like: ", job.jobId);

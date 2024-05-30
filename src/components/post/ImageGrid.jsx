@@ -40,7 +40,7 @@ function ImageGrid({ imgs, isRecommend }) {
             <div className="img-inner">
               <img
                 style={{ height: "100vh", width: "auto", margin: "auto" }}
-                src={showImgs[0]}
+                src={showImgs[0] || "0"}
                 alt="img"
               />
             </div>
@@ -100,7 +100,7 @@ function ImageGrid({ imgs, isRecommend }) {
             >
               <img
                 className="post-body-img img-3 img-3-1st"
-                src={imgs[0].url}
+                src={imgs[0]?.url || ""}
                 alt="img"
               />
             </Col>

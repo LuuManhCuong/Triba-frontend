@@ -101,7 +101,7 @@ function UserListingCard({ user }) {
               }}
               src={
                 user?.avatar ||
-                `https://res.cloudinary.com/djcamu6kz/image/upload/v1716727509/byq36gfaokzcytmmcbgf.svg`
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7xcDbUE0eJvCkvvGNoKQrTfMI4Far-8n7pHQbbTCkV9uVWN2AJ8X6juVovcORp0S04XA&usqp=CAU"
               }
               alt="avt"
             />
@@ -140,7 +140,12 @@ function UserListingCard({ user }) {
                   }}
                 >
                   {/* <i className="fa fa-map-marker"></i> {user?.address}{" "} */}
-                  <ImageGrid imgs={[user?.coverImg]}></ImageGrid>
+                  <ImageGrid
+                    imgs={[
+                      user?.coverImg ||
+                        "https://talentbold.com/Upload/news/20200429/160724223_vai-tro-cua-cv-3.png",
+                    ]}
+                  ></ImageGrid>
                 </p>
               </div>
             </div>

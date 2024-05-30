@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,9 @@ function JobListingCard({ job, isAdmin }) {
     job.likes.some((like) => like.user.userId === userId)
   ); // Trạng thái like
 
+  useEffect(() => {
+    setLiked(job.likes.some((like) => like.user.userId === userId));
+  }, [job]);
   function handleEdit() {
     setShowEditModal(!showEditModal);
   }

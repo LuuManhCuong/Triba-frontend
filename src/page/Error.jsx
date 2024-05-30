@@ -8,12 +8,12 @@ function Error() {
         <p className="mb-4 mx-2">
           Oops! 😖 The requested URL was not found on this server.
         </p>
-        <a href="/" className="btn btn-primary">
+        <a href="/index" className="btn btn-primary">
           Back to home
         </a>
         <div className="mt-3">
           <img
-            src="http://127.0.0.1:5500/assets/img/illustrations/page-misc-error-light.png"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTcKcoquPvJ-O9WfgEYiUF34hYhzaGcrtamQ&s"
             alt="page-misc-error-light"
             width="500"
             className="img-fluid"

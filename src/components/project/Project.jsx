@@ -11,7 +11,14 @@ import EditProfile from "./EditProfile";
 import ImageGrid from "../post/ImageGrid";
 
 const Avatar = ({ src, alt }) => (
-  <img src={src} className="img-fluid avatar-xxl rounded-circle" alt={alt} />
+  <img
+    src={
+      src ||
+      "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+    }
+    className="img-fluid avatar-xxl rounded-circle"
+    alt={alt}
+  />
 );
 
 const ProjectCard = ({ project, index }) => (
@@ -59,7 +66,10 @@ const ProjectCard = ({ project, index }) => (
                       width: "50px",
                       height: "50px",
                     }}
-                    src={assignee.avatar}
+                    src={
+                      assignee.avatar ||
+                      "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                    }
                     alt=""
                     className="rounded-circle avatar-sm"
                   />
@@ -147,7 +157,7 @@ const Project = () => {
               name: e.job.user.lastName + " " + e.job.user.firstName,
               avatar:
                 e.job.user.avatar ||
-                "https://bootdey.com/img/Content/avatar/avatar1.png",
+                "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
             },
           ],
           status: e.status,
@@ -217,7 +227,7 @@ const Project = () => {
                     <Avatar
                       src={
                         user?.avatar ||
-                        "https://bootdey.com/img/Content/avatar/avatar1.png"
+                        "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
                       }
                       alt="Jansh Wells"
                     />
@@ -354,7 +364,12 @@ const Project = () => {
                       className="img-fluid rounded"
                       alt=""
                     /> */}
-                    <ImageGrid imgs={[user?.coverImg]}></ImageGrid>
+                    <ImageGrid
+                      imgs={[
+                        user?.coverImg ||
+                          " https://talentbold.com/Upload/news/20200429/160724223_vai-tro-cua-cv-3.png",
+                      ]}
+                    ></ImageGrid>
                   </div>
                 </div>
               </div>

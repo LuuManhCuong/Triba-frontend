@@ -133,7 +133,10 @@ const EditProfile = ({ user }) => {
                     borderRadius: "500px",
                     border: "1px solid var(--primary-color)",
                   }}
-                  src={profile?.avatar}
+                  src={
+                    profile?.avatar ||
+                    " https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                  }
                   alt="Profile"
                 />
               </label>
@@ -255,9 +258,12 @@ const EditProfile = ({ user }) => {
                   <img
                     className="rounded mt-3"
                     width="150px"
-                    src={profile?.coverImg}
+                    src={
+                      profile?.coverImg ||
+                      "https://talentbold.com/Upload/news/20200429/160724223_vai-tro-cua-cv-3.png"
+                    }
                     alt="CV"
-                    style={{ height: "142px", objectFit: "contain" }}
+                    style={{ height: "142px", objectFit: "cover" }}
                   />
                 </label>
               </div>

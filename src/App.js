@@ -24,7 +24,6 @@ import AdminManageJob from "./components/admin/AdminManageJob";
 function App() {
   return (
     <Routes>
-      <Route path="/error" element={<Error />} />
       <Route path="/" element={<Home />} />
       <Route path="/index" element={<Index />} />
       <Route path="/about" element={<About />} />
@@ -46,6 +45,8 @@ function App() {
       <Route path="/messenger" element={<Messenger />} />
 
       <Route path="/login" element={<Login />} />
+
+      <Route path="*" element={<Error />} />
     </Routes>
   );
 }

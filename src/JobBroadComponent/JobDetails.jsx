@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./css/style.scss"; // Ensure the correct path to your CSS file
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,11 +14,16 @@ const JobDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   let userId = localStorage.getItem("userId");
   const account = useSelector(accountSelector);
-
+  const navigate = useNavigate();
   const [liked, setLiked] = useState(
     jobs?.likes.some((like) => like.user.userId === userId)
   ); // Trạng thái like
 
+  useEffect(() => {
+    if (!jobs?.length > 0) {
+      navigate("/err");
+    }
+  }, [jobs]);
   const fetchData = async (id) => {
     try {
       const response = await axios.get(
@@ -448,7 +453,11 @@ const JobDetails = () => {
                 </div>
               </div>
               <div className="col-md-12">
-                {!isLoading ? <ImageGrid imgs={jobs?.images}></ImageGrid> : ""}
+                {!isLoading && jobs?.length > 0 ? (
+                  <ImageGrid imgs={jobs?.images}></ImageGrid>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="share_wrap d-flex">
                 <div className="col-md-12">
